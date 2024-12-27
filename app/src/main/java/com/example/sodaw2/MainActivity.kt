@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = adapter
 
         // TabLayout과 ViewPager 연결
-        val tabTitles = listOf("Monday", "Tuesday", "Wednesday")
+        val tabTitles = listOf("Contacts", "Tuesday", "Wednesday")
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
