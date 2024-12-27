@@ -82,7 +82,7 @@ class TuesdayFragment : Fragment() {
         )
         val dataSet7 = listOf(
             GridItem(R.drawable.image2, "똑똑핑"),
-            GridItem(R.drawable.image23, "공주핑")
+            GridItem(R.drawable.image23, "공쥬핑")
         )
         val dataSet8 = listOf(
             GridItem(R.drawable.image7, "떠벌핑"),

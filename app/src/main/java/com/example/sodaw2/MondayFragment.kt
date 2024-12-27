@@ -46,7 +46,7 @@ class MondayFragment : Fragment() {
             "하츄핑" to R.drawable.image3,
             "차캐핑" to R.drawable.image6,
             "똑똑핑" to R.drawable.image2,
-            "공주핑" to R.drawable.image23,
+            "공쥬핑" to R.drawable.image23,
             "떠벌핑" to R.drawable.image7,
             "다조핑" to R.drawable.image8,
             "앙대핑" to R.drawable.image22,
