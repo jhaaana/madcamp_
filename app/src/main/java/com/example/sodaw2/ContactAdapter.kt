@@ -18,11 +18,11 @@ class ContactAdapter(private val context: Context, private val contacts: List<Mo
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false)
 
         val tvName: TextView = view.findViewById(R.id.tvName)
-        val tvPhone: TextView = view.findViewById(R.id.tvPhone)
+        val tvDescription: TextView = view.findViewById(R.id.tvDescription)
 
         val contact = getItem(position)
         tvName.text = contact.name
-        tvPhone.text = contact.phone
+        tvDescription.text = contact.description
 
         return view
     }
