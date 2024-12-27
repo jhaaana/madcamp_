@@ -1,66 +1,3 @@
-//
-////원본 코드
-////package com.example.sodaw2
-////
-////import android.os.Bundle
-////import android.view.LayoutInflater
-////import android.view.View
-////import android.view.ViewGroup
-////import androidx.fragment.app.Fragment
-////
-////class TuesdayFragment : Fragment() {
-////    override fun onCreateView(
-////        inflater: LayoutInflater, container: ViewGroup?,
-////        savedInstanceState: Bundle?
-////    ): View? {
-////        return inflater.inflate(R.layout.fragment_tuesday, container, false)
-////    }
-////}
-//
-//
-//package com.example.sodaw2
-//
-//import android.os.Bundle
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import androidx.fragment.app.Fragment
-//import androidx.recyclerview.widget.GridLayoutManager
-//import androidx.recyclerview.widget.RecyclerView
-//
-//class TuesdayFragment : Fragment() {
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        val view = inflater.inflate(R.layout.fragment_tuesday, container, false)
-//
-//        // Set up the first grid
-//        val grid1: RecyclerView = view.findViewById(R.id.grid1)
-//        val layoutManager1 = GridLayoutManager(context, 2) // 2 columns
-//        grid1.layoutManager = layoutManager1
-//        val dataSet1 = listOf("Item 1", "Item 2", "Item 3", "Item 4")
-//        grid1.adapter = GridAdapter(dataSet1)
-//
-//        // Set up the second grid
-//        val grid2: RecyclerView = view.findViewById(R.id.grid2)
-//        val layoutManager2 = GridLayoutManager(context, 2) // 2 columns
-//        grid2.layoutManager = layoutManager2
-//        val dataSet2 = listOf("Item 5", "Item 6", "Item 7", "Item 8")
-//        grid2.adapter = GridAdapter(dataSet2)
-//
-//        // Set up the third grid
-//        val grid3: RecyclerView = view.findViewById(R.id.grid3)
-//        val layoutManager3 = GridLayoutManager(context, 2) // 2 columns
-//        grid3.layoutManager = layoutManager3
-//        val dataSet3 = listOf("Item 9", "Item 10", "Item 11", "Item 12")
-//        grid3.adapter = GridAdapter(dataSet3)
-//
-//        return view
-//    }
-//}
-
 package com.example.sodaw2
 
 import android.os.Bundle
@@ -119,14 +56,6 @@ class TuesdayFragment : Fragment() {
         val layoutManager10 = GridLayoutManager(context, 2) // 2 columns
         grid10.layoutManager = layoutManager10
 
-        // Create dataset with both image resources and text
-//        val dataSet1 = listOf(
-//            GridItem(R.drawable.image9, "Item 1"),
-//            GridItem(R.drawable.image15, "Item 2")
-//        )
-//
-//        grid1.adapter = GridAdapter(dataSet1)
-
         val dataSet1 = listOf(
             GridItem(R.drawable.image24, "무셔핑"),
             GridItem(R.drawable.image10, "시러핑")
@@ -180,5 +109,7 @@ class TuesdayFragment : Fragment() {
         grid10.adapter = GridAdapter(dataSet10)
         return view
     }
+
+
 }
 

@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken
 class MondayFragment : Fragment() {
     data class Contact(
         val name: String,
-        val phone: String
+        val description: String
     )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +30,40 @@ class MondayFragment : Fragment() {
         // val formattedContacts = contactList.map { "${it.name}: ${it.phone}" }
         val adapter = ContactAdapter(requireContext(), contactList)
         listView.adapter = adapter
+
+        // 이름-이미지 맵 생성
+        val imageMap = mapOf(
+            "무셔핑" to R.drawable.image24,
+            "시러핑" to R.drawable.image10,
+            "바네핑" to R.drawable.image11,
+            "악동핑" to R.drawable.image12,
+            "덜덜핑" to R.drawable.image13,
+            "그림핑" to R.drawable.image14,
+            "무거핑" to R.drawable.image15,
+            "베베핑" to R.drawable.image18,
+            "코자핑" to R.drawable.image19,
+            "모야핑" to R.drawable.image20,
+            "하츄핑" to R.drawable.image3,
+            "차캐핑" to R.drawable.image6,
+            "똑똑핑" to R.drawable.image2,
+            "공주핑" to R.drawable.image23,
+            "떠벌핑" to R.drawable.image7,
+            "다조핑" to R.drawable.image8,
+            "앙대핑" to R.drawable.image22,
+            "아휴핑" to R.drawable.image21,
+            "찌릿핑" to R.drawable.image5,
+            "꽁꽁핑" to R.drawable.image4
+        )
+
+        // 클릭 이벤트 처리
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedContact = contactList[position]
+            val selectedImageRes = imageMap[selectedContact.name] ?: R.drawable.default_image
+
+            // 팝업 창 표시
+            val dialog = ContactInfoDialogFragment.newInstance(selectedContact.name, selectedImageRes)
+            dialog.show(parentFragmentManager, "ContactInfoDialog")
+        }
 
         return rootView
     }
