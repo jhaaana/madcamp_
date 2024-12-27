@@ -8,6 +8,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.widget.ViewPager2
 
+
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,11 +25,14 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = adapter
 
         // TabLayout과 ViewPager 연결
-        val tabTitles = listOf("Monday", "Tuesday", "Wednesday")
+        val tabTitles = listOf("Contacts", "Gallery", "Wednesday")
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
+
     }
+
+
 
     class ViewPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
         override fun getItemCount(): Int = 3 // 탭의 개수
@@ -42,3 +47,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
