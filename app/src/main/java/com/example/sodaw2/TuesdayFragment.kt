@@ -128,8 +128,8 @@ class TuesdayFragment : Fragment() {
 //        grid1.adapter = GridAdapter(dataSet1)
 
         val dataSet1 = listOf(
-            GridItem(R.drawable.image24, "무셔핑"),
-            GridItem(R.drawable.image10, "시러핑")
+            GridItem(R.drawable.image26, "무셔핑"),
+            GridItem(R.drawable.image27, "시러핑")
         )
         val dataSet2 = listOf(
             GridItem(R.drawable.image11, "바네핑"),
