@@ -1,12 +1,15 @@
 package com.example.sodaw2
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.widget.ViewPager2
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +30,20 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
+
+        /*// 1. ListView 연결
+        val listView: ListView = findViewById(R.id.listView)
+
+        // 2. 연락처 데이터 준비
+        val contactList = listOf("John Doe", "Jane Smith", "Alice Johnson", "Bob Brown")
+
+        // 3. ArrayAdapter 생성 및 설정
+        val adapter2 = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            contactList
+        )
+        listView.adapter = adapter2*/
     }
 
     class ViewPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
