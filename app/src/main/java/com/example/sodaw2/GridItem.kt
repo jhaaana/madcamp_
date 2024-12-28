@@ -5,7 +5,8 @@ data class GridItem(
     val imageResId: Int,
     val name: String,
     val description: String,
-    val rank: String
+    val rank: String,
+    var isHidden: Boolean = true
 ) {
     val rankColor: Int
         get() = when (rank) {

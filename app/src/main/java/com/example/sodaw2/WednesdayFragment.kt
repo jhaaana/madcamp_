@@ -23,6 +23,20 @@ class WednesdayFragment : Fragment() {
     private var superRareProbability = 0
     private var hiddenProbability = 0
 
+    // 등급별 티니핑 이름
+    private val normalTiniPings = mapOf(
+        "무셔핑" to R.drawable.image24,
+        "시러핑" to R.drawable.image10,
+        "덜덜핑" to R.drawable.image13,
+        "그림핑" to R.drawable.image14,
+        "무거핑" to R.drawable.image15,
+        "똑똑핑" to R.drawable.image2,
+        "찌릿핑" to R.drawable.image5,
+        "꽁꽁핑" to R.drawable.image4,
+        "떠벌핑" to R.drawable.image7,
+        "다조핑" to R.drawable.image8
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,13 +89,20 @@ class WednesdayFragment : Fragment() {
                 // println("노멀 아이템 수집!")
                 normalProbability = 0
                 // score = 0
-                showPopupMessage(popupMessage)
+
+                // 노멀 티니핑들 배열..
+                val randomTiniPing = normalTiniPings.keys.random()
+
+                SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
+
+                showPopupMessage(popupMessage, randomTiniPing, "노멀")
             }
         }
     }
 
-    private fun showPopupMessage(popupMessage: TextView) {
+    private fun showPopupMessage(popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {
         // 팝업 메시지 보이기
+        popupMessage.text = "$tiniPingName($tiniPingRank)을 습득했습니다!"
         popupMessage.visibility = View.VISIBLE
 
         // 애니메이션 적용 (짧게 펴졌다 사라지는 효과)

@@ -14,54 +14,41 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class TuesdayFragment : Fragment() {
-
+    private lateinit var adapter: GridAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_tuesday, container, false)
+        // ViewModel 초기화
 
         // Find views
-        val toggleSwitch: Switch = view.findViewById(R.id.toggleSwitch)
+        // val toggleSwitch: Switch = view.findViewById(R.id.toggleSwitch)
         val grid1: RecyclerView = view.findViewById(R.id.grid1)
 
         // 초기 상태를 꺼짐으로 설정
-        toggleSwitch.isChecked = false
+        // toggleSwitch.isChecked = false
 
-        // Define the data sets
-        val dataSet1 = listOf(
-            GridItem(R.drawable.image24, "무셔핑", "노멀", "N"),
-            GridItem(R.drawable.image10, "시러핑", "노멀", "N"),
-            GridItem(R.drawable.image13, "덜덜핑","노멀", "N"),
-            GridItem(R.drawable.image14, "그림핑","노멀", "N"),
-            GridItem(R.drawable.image15, "무거핑","노멀", "N"),
-            GridItem(R.drawable.image2, "똑똑핑","노멀", "N"),
-            GridItem(R.drawable.image5, "찌릿핑","노멀", "N"),
-            GridItem(R.drawable.image4, "꽁꽁핑","노멀", "N"),
-            GridItem(R.drawable.image7, "떠벌핑","노멀", "N"),
-            GridItem(R.drawable.image8, "다조핑","노멀", "N"),
-            GridItem(R.drawable.image18, "베베핑","에픽", "E"),
-            GridItem(R.drawable.image6, "차캐핑","에픽", "E"),
-            GridItem(R.drawable.image19, "코자핑","에픽", "E"),
-            GridItem(R.drawable.image20, "모야핑","에픽", "E"),
-            GridItem(R.drawable.image21, "아휴핑","에픽", "E"),
-            GridItem(R.drawable.image22, "앙대핑", "레어", "R"),
-            GridItem(R.drawable.image11, "바네핑","레어", "R"),
-            GridItem(R.drawable.image23, "공쥬핑","레어", "R"),
-            GridItem(R.drawable.image3, "하츄핑","슈퍼레어", "SR"),
-            // GridItem(R.drawable.image12, "악동핑","히든", "H")
-        )
-        val hiddenDataSet1 = dataSet1.map {
+        /*val hiddenDataSet1 = dataSet1.map {
             GridItem(R.drawable.question_mark, "???", "???", "UN") // Placeholder
-        }
+        }*/
 
         // Set up the adapter
-        val adapter = GridAdapter(hiddenDataSet1.toMutableList()) // Mutable list for dynamic changes
+        // val adapter = GridAdapter(SharedData.dataSet1) // Mutable list for dynamic changes
+        // grid1.layoutManager = GridLayoutManager(context, 2)
+        // grid1.adapter = adapter
+
+        adapter = GridAdapter(SharedData.dataSet1.value ?: mutableListOf())
         grid1.layoutManager = GridLayoutManager(context, 2)
         grid1.adapter = adapter
 
+        // Observe data changes
+        SharedData.dataSet1.observe(viewLifecycleOwner) { updatedList ->
+            adapter.updateData(updatedList)
+        }
+
         // Add listener to toggle between datasets
-        toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
+        /*toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 showPasswordDialog { isCorrect ->
                     if (isCorrect) {
@@ -75,11 +62,11 @@ class TuesdayFragment : Fragment() {
                 adapter.updateData(hiddenDataSet1)
             }
 
-        }
+        }*/
 
         return view
     }
-    private fun showPasswordDialog(callback: (Boolean) -> Unit) {
+    /*private fun showPasswordDialog(callback: (Boolean) -> Unit) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Enter Password")
 
@@ -103,5 +90,5 @@ class TuesdayFragment : Fragment() {
         }
 
         builder.show()
-    }
+    }*/
 }

@@ -28,9 +28,19 @@ class GridAdapter(private var dataSet: MutableList<GridItem>) : RecyclerView.Ada
         val gridItem = dataSet[position]
 
         // Update views based on the current data
-        holder.imageView.setImageResource(gridItem.imageResId)
-        holder.nameTextView.text = gridItem.name
-        holder.itemDescription.text = gridItem.description
+        // holder.imageView.setImageResource(gridItem.imageResId)
+        // holder.nameTextView.text = gridItem.name
+        // holder.itemDescription.text = gridItem.description
+
+        if (gridItem.isHidden) {
+            holder.imageView.setImageResource(R.drawable.question_mark)
+            holder.nameTextView.text = "???"
+            holder.itemDescription.text = "???"
+        } else {
+            holder.imageView.setImageResource(gridItem.imageResId)
+            holder.nameTextView.text = gridItem.name
+            holder.itemDescription.text = gridItem.description
+        }
 
         // Set the background color based on the rank
         holder.cardView.setBackgroundResource(gridItem.rankColor)
@@ -40,9 +50,8 @@ class GridAdapter(private var dataSet: MutableList<GridItem>) : RecyclerView.Ada
     override fun getItemCount(): Int = dataSet.size
 
     // Update the dataset and refresh the RecyclerView
-    fun updateData(newData: List<GridItem>) {
-        dataSet.clear()
-        dataSet.addAll(newData)
+    fun updateData(newData: MutableList<GridItem>) {
+        dataSet = newData
         notifyDataSetChanged()
     }
 }
