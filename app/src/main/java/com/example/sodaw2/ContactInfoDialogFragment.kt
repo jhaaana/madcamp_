@@ -9,8 +9,9 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import android.view.Gravity
 import android.util.TypedValue
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class ContactInfoDialogFragment : DialogFragment() {
 
@@ -40,6 +41,12 @@ class ContactInfoDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.dialog_contact_info, container, false)
+        val closeButton: ImageView = view.findViewById(R.id.closeButton)
+
+        // 닫기 버튼 동작
+        closeButton.setOnClickListener {
+            dismiss() // 팝업 창 닫기
+        }
 
         val name = arguments?.getString(ARG_NAME)
         val imageRes = arguments?.getInt(ARG_IMAGE_RES)
@@ -51,18 +58,22 @@ class ContactInfoDialogFragment : DialogFragment() {
         val nameTextView: TextView = view.findViewById(R.id.contactNameTextView)
         val hpTextView: TextView = view.findViewById(R.id.contactHpTextView)
         val dialogueTextView: TextView = view.findViewById(R.id.contactDialogueTextView)
-        val youtubePlayer: WebView = view.findViewById(R.id.contactYoutubePlayer)
+        val youtubePlayerView: YouTubePlayerView = view.findViewById(R.id.youtubePlayerView)
 
         nameTextView.text = name
 
         hpTextView.text = "H.P.: $hp"
         dialogueTextView.text = "\"$dialogue\""
 
-        // WebView 설정
-        youtubePlayer.settings.javaScriptEnabled = true // 자바스크립트 활성화
-        youtubePlayer.webViewClient = WebViewClient() // WebView에서 브라우저 열기 방지
         youtube?.let {
-            youtubePlayer.loadUrl(it) // URL 로드
+            val videoId = it.extractYouTubeVideoId()
+            lifecycle.addObserver(youtubePlayerView) // YouTubePlayerView 생명주기 연결
+
+            youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                    youTubePlayer.cueVideo(videoId, 0f) // 동영상 미리보기
+                }
+            })
         }
 
         imageRes?.let { imageView.setImageResource(it) }
@@ -70,11 +81,16 @@ class ContactInfoDialogFragment : DialogFragment() {
         return view
     }
 
+    private fun String.extractYouTubeVideoId(): String {
+        val regex = "(?<=v=|\\/)([\\w-]{11})".toRegex()
+        return regex.find(this)?.value ?: this
+    }
+
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
-            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            setGravity(Gravity.TOP) // 팝업 창을 화면 상단에 표시
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (resources.displayMetrics.heightPixels * 0.5).toInt())
+            setGravity(Gravity.CENTER) // 팝업 창을 화면 중앙에 표시
             setDimAmount(0.5f) // 배경 흐림 효과
 
             // dp를 px로 변환하여 y축 위치 설정
