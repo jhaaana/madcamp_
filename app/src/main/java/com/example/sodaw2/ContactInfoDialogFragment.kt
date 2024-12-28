@@ -1,6 +1,5 @@
 package com.example.sodaw2
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,17 +9,25 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import android.view.Gravity
 import android.util.TypedValue
+import android.webkit.WebView
+import android.webkit.WebViewClient
 
 class ContactInfoDialogFragment : DialogFragment() {
 
     companion object {
         private const val ARG_NAME = "name"
         private const val ARG_IMAGE_RES = "imageRes"
+        private const val ARG_HP = "hp"
+        private const val ARG_DIALOGUE = "dialogue"
+        private const val ARG_YOUTUBE = "youtube"
 
-        fun newInstance(name: String, imageRes: Int): ContactInfoDialogFragment {
+        fun newInstance(name: String, imageRes: Int, hp: String, dialogue: String, youtube: String): ContactInfoDialogFragment {
             val args = Bundle().apply {
                 putString(ARG_NAME, name)
                 putInt(ARG_IMAGE_RES, imageRes)
+                putString(ARG_HP, hp)
+                putString(ARG_DIALOGUE, dialogue)
+                putString(ARG_YOUTUBE, youtube)
             }
             val fragment = ContactInfoDialogFragment()
             fragment.arguments = args
@@ -36,20 +43,33 @@ class ContactInfoDialogFragment : DialogFragment() {
 
         val name = arguments?.getString(ARG_NAME)
         val imageRes = arguments?.getInt(ARG_IMAGE_RES)
+        val hp = arguments?.getString(ARG_HP)
+        val dialogue = arguments?.getString(ARG_DIALOGUE)
+        val youtube = arguments?.getString(ARG_YOUTUBE)
 
         val imageView: ImageView = view.findViewById(R.id.contactImageView)
         val nameTextView: TextView = view.findViewById(R.id.contactNameTextView)
+        val hpTextView: TextView = view.findViewById(R.id.contactHpTextView)
+        val dialogueTextView: TextView = view.findViewById(R.id.contactDialogueTextView)
+        val youtubePlayer: WebView = view.findViewById(R.id.contactYoutubePlayer)
 
         nameTextView.text = name
+
+        hpTextView.text = "H.P.: $hp"
+        dialogueTextView.text = "\"$dialogue\""
+
+        // WebView 설정
+        youtubePlayer.settings.javaScriptEnabled = true // 자바스크립트 활성화
+        youtubePlayer.webViewClient = WebViewClient() // WebView에서 브라우저 열기 방지
+        youtube?.let {
+            youtubePlayer.loadUrl(it) // URL 로드
+        }
+
         imageRes?.let { imageView.setImageResource(it) }
 
         return view
     }
 
-    /*override fun onStart() {
-        super.onStart()
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    }*/
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
