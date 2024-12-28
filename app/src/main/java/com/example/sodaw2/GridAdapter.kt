@@ -13,6 +13,8 @@ class GridAdapter(private val dataSet: List<GridItem>) : RecyclerView.Adapter<Gr
         val cardView: View = view.findViewById(R.id.card_view)
         val imageView: ImageView = view.findViewById(R.id.itemImage)
         val nameTextView: TextView = view.findViewById(R.id.itemName)
+        val itemDescription: TextView = view.findViewById(R.id.itemDescription)
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -31,6 +33,9 @@ class GridAdapter(private val dataSet: List<GridItem>) : RecyclerView.Adapter<Gr
 
         // Set the text
         holder.nameTextView.text = gridItem.name
+
+        //set description
+        holder.itemDescription.text = gridItem.description
 
         // Set the background color based on the rank
         holder.cardView.setBackgroundResource(gridItem.rankColor)
