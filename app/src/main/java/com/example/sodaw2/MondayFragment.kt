@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import android.content.Context
@@ -14,7 +13,10 @@ import com.google.gson.reflect.TypeToken
 class MondayFragment : Fragment() {
     data class Contact(
         val name: String,
-        val description: String
+        val description: String,
+        val hp: String,
+        val dialogue: String,
+        val youtube: String
     )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +63,13 @@ class MondayFragment : Fragment() {
             val selectedImageRes = imageMap[selectedContact.name] ?: R.drawable.default_image
 
             // 팝업 창 표시
-            val dialog = ContactInfoDialogFragment.newInstance(selectedContact.name, selectedImageRes)
+            val dialog = ContactInfoDialogFragment.newInstance(
+                selectedContact.name,
+                selectedImageRes,
+                selectedContact.hp,
+                selectedContact.dialogue,
+                selectedContact.youtube
+            )
             dialog.show(parentFragmentManager, "ContactInfoDialog")
         }
 
