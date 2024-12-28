@@ -13,6 +13,7 @@ data class GridItem(
             "R" -> R.drawable.gradient_purple // 보라색
             "H" -> R.drawable.hiddenfinal_1// 검정색
             "SR" -> R.drawable.gold_gradient// 금색
+            "UN" -> R.drawable.unknown_gradient
             else -> R.drawable.gradation_blue // N 랭크, 오렌지색
         }
 }

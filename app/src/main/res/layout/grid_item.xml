@@ -33,6 +33,7 @@
             android:text="Item Name"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:gravity="center"
             android:layout_marginBottom="4dp"/>
 
 <!--         Text View for item description -->
@@ -42,6 +43,8 @@
             android:layout_height="wrap_content"
             android:text="Item Description"
             android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
             android:layout_marginBottom="8dp"/>
 
     </LinearLayout>

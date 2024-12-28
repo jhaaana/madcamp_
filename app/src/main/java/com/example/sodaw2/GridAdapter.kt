@@ -7,20 +7,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class GridAdapter(private val dataSet: List<GridItem>) : RecyclerView.Adapter<GridAdapter.ViewHolder>() {
+class GridAdapter(private var dataSet: MutableList<GridItem>) : RecyclerView.Adapter<GridAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardView: View = view.findViewById(R.id.card_view)
         val imageView: ImageView = view.findViewById(R.id.itemImage)
         val nameTextView: TextView = view.findViewById(R.id.itemName)
         val itemDescription: TextView = view.findViewById(R.id.itemDescription)
-
     }
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.grid_item, parent, false) // Use your grid_item layout
+            .inflate(R.layout.grid_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -28,13 +27,9 @@ class GridAdapter(private val dataSet: List<GridItem>) : RecyclerView.Adapter<Gr
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val gridItem = dataSet[position]
 
-        // Set the image
+        // Update views based on the current data
         holder.imageView.setImageResource(gridItem.imageResId)
-
-        // Set the text
         holder.nameTextView.text = gridItem.name
-
-        //set description
         holder.itemDescription.text = gridItem.description
 
         // Set the background color based on the rank
@@ -43,4 +38,11 @@ class GridAdapter(private val dataSet: List<GridItem>) : RecyclerView.Adapter<Gr
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int = dataSet.size
+
+    // Update the dataset and refresh the RecyclerView
+    fun updateData(newData: List<GridItem>) {
+        dataSet.clear()
+        dataSet.addAll(newData)
+        notifyDataSetChanged()
+    }
 }
