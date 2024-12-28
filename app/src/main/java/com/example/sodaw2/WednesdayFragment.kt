@@ -9,10 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlin.random.Random
+import androidx.core.content.ContextCompat
 
 class WednesdayFragment : Fragment() {
     private var score = 0
     private val SCORE_KEY = "score_key" // SharedPreferences에 사용할 키
+
+    // 등급별 수집 확률
+    private var normalProbability = 0
+    private var epicProbability = 0
+    private var superRareProbability = 0
+    private var hiddenProbability = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +30,7 @@ class WednesdayFragment : Fragment() {
         // SharedPreferences에서 점수 복원
         // *** val sharedPreferences = requireContext().getSharedPreferences("game_prefs", Context.MODE_PRIVATE)
         // *** score = sharedPreferences.getInt(SCORE_KEY, 0)
+        // *** normalProbability = sharedPreferences.getInt("normal_probability", 0)
 
         // 텍스트와 이미지뷰 초기화
         val scoreText: TextView = view.findViewById(R.id.scoreText)
@@ -36,8 +44,16 @@ class WednesdayFragment : Fragment() {
             score++ // 점수 증가
             scoreText.text = "Score: $score"
 
+            // 점수에 따라 확률 업데이트 (10회마다)
+            if (score % 10 == 0) {
+                normalProbability += 10
+                // *** sharedPreferences.edit().putInt("normal_probability", normalProbability).apply()
+            }
+
             // 점수를 SharedPreferences에 저장
             // *** sharedPreferences.edit().putInt(SCORE_KEY, score).apply()
+
+            collectItemBasedOnProbability()
 
             // 알 이미지 무작위 위치로 이동
             view.post {
@@ -47,6 +63,20 @@ class WednesdayFragment : Fragment() {
 
         return view
     }
+
+    private fun collectItemBasedOnProbability() {
+        val rand = Random.nextInt(0, 100)
+        when {
+            rand < normalProbability -> {
+                // 노멀 아이템 수집
+                // println("노멀 아이템 수집!")
+                normalProbability = 0
+                score = 0
+            }
+
+        }
+    }
+
 
     private fun moveEggRandomly(eggImage: ImageView, containerWidth: Int, containerHeight: Int) {
         // 이미지뷰가 컨테이너를 벗어나지 않도록 조정

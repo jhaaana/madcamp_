@@ -25,6 +25,9 @@ class TuesdayFragment : Fragment() {
         val toggleSwitch: Switch = view.findViewById(R.id.toggleSwitch)
         val grid1: RecyclerView = view.findViewById(R.id.grid1)
 
+        // 초기 상태를 꺼짐으로 설정
+        toggleSwitch.isChecked = false
+
         // Define the data sets
         val dataSet1 = listOf(
             GridItem(R.drawable.image24, "무셔핑", "노멀", "N"),
@@ -53,7 +56,7 @@ class TuesdayFragment : Fragment() {
         }
 
         // Set up the adapter
-        val adapter = GridAdapter(dataSet1.toMutableList()) // Mutable list for dynamic changes
+        val adapter = GridAdapter(hiddenDataSet1.toMutableList()) // Mutable list for dynamic changes
         grid1.layoutManager = GridLayoutManager(context, 2)
         grid1.adapter = adapter
 
