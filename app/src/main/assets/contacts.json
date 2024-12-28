@@ -1,82 +1,143 @@
 [
   {
     "name": "무셔핑",
-    "description": "놀래키는 걸 좋아하는, 두려움의 티니핑."
+    "description": "놀래키는 걸 좋아하는, 두려움의 티니핑.",
+    "hp": "010-0000-0000",
+    "dialog": "\"진짜 웃기다, 무셔! 저런 겁쟁이들~ 이 무셔핑님처럼 용감해야지~!\"",
+    "youtube": "https://youtu.be/0Mr5DPA2qSk"
   },
   {
     "name": "시러핑",
-    "description": "거절은 거절한다! 거부감의 티니핑."
+    "description": "거절은 거절한다! 거부감의 티니핑.",
+    "hp": "010-0000-0001",
+    "dialog": "\"나는야~ 모든 게 싫다네~ 시러시러~\"",
+    "youtube": "https://youtu.be/NlXIMumhxD4"
   },
   {
     "name": "바네핑",
-    "description": "첫 눈에 반하게 만드는, 이끌림의 티니핑."
+    "description": "첫 눈에 반하게 만드는, 이끌림의 티니핑.",
+    "hp": "010-0000-0002",
+    "dialog": "\"서로 사랑해야지, 바네~!”\n“저길 좀 봐, 내 덕분에 온 세상이 사랑으로 가득 차고 있잖아?\"",
+    "youtube": "https://youtu.be/zAGGhBiW_ow"
   },
   {
     "name": "악동핑",
-    "description": "티니하트윙에도 정보가 나오지 않는 정체불명의 티니핑."
+    "description": "티니하트윙에도 정보가 나오지 않는 정체불명의 티니핑.",
+    "hp": "010-0000-0003",
+    "dialog": "\"나는야~ 장난치기, 골탕 먹이기의 천재! 엉망진창 만들기를 좋아하는 티니핑이시다~, 통통~!\"",
+    "youtube": "https://youtu.be/L-FbH_FGcm0"
   },
   {
     "name": "덜덜핑",
-    "description": "겨울을 사랑하는, 차가움의 티니핑."
+    "description": "겨울을 사랑하는, 차가움의 티니핑.",
+    "hp": "010-0000-0004",
+    "dialog": "\"감히 내 집을 빼앗아가다니! 너희도 덜덜 떨어보라고, 덜덜!\"",
+    "youtube": "https://youtu.be/fwowOYDe1rs"
   },
   {
     "name": "그림핑",
-    "description": "그림 그리길 좋아하는 예술감의 티니핑."
+    "description": "그림 그리길 좋아하는 예술감의 티니핑.",
+    "hp": "010-0000-0005",
+    "dialog": "\"난 그림만 그릴 수 있으면 행복해, 그림~\"",
+    "youtube": "https://youtu.be/C_ZSf1FxoFM"
   },
   {
     "name": "무거핑",
-    "description": "운동을 좋아하는, 무거움의 티니핑."
+    "description": "운동을 좋아하는, 무거움의 티니핑.",
+    "hp": "010-0000-0006",
+    "dialog": "\"이런 무거운 걸 들 수 있는 나란 녀석은 역시 멋져~!\"",
+    "youtube": "https://youtu.be/QD9nl3SNhWM"
   },
   {
     "name": "베베핑",
-    "description": "아기를 사랑하는, 동심의 티니핑."
+    "description": "아기를 사랑하는, 동심의 티니핑.",
+    "hp": "010-0000-0007",
+    "dialog": "\"아기가 되어 봐! 베베~! 헤헤헷! 아기가 되니까 좋지? 베베!”\n“뭐, 아기가 싫다고? 너도 다시 순수한 때로 돌아가 봐, 베베~! 아기가 제일 귀엽지? 베베!\"",
+    "youtube": "https://youtu.be/7vnIv4E3M94"
   },
   {
     "name": "코자핑",
-    "description": "꿈속을 들여다보는, 졸음의 티니핑."
+    "description": "꿈속을 들여다보는, 졸음의 티니핑.",
+    "hp": "010-0000-0008",
+    "dialog": "\"지금이라면 엄청 달콤한 꿈을 꿀 거야! 잠에 빠져라~ 코자~!\"",
+    "youtube": "https://youtu.be/iWg6EYqHo_Y"
   },
   {
     "name": "모야핑",
-    "description": "모든 것이 궁금한, 호기심의 티니핑."
+    "description": "모든 것이 궁금한, 호기심의 티니핑.",
+    "hp": "010-0000-0009",
+    "dialog": "\"그거 작아서 잘 안 보인다~ 모야모야?”\n“모야모야, 궁금해! 커져라~! 모야!\"",
+    "youtube": "https://youtu.be/mmK4WijfQ1w"
+
   },
   {
     "name": "하츄핑",
-    "description": "애교가 넘치는 사랑의 티니핑."
+    "description": "애교가 넘치는 사랑의 티니핑.",
+    "hp": "010-0000-0010",
+    "dialog": "\"일어나... 모두들...”\n“내 사랑을 듬뿍듬뿍 줄게~ 츄~♥”\n“오늘부터 너희는 티니핑 스쿨의 학생이고, 난 선생님이야, 츄!”\n“혼자 있지 말고, 우리와 함께 놀자 츄~”\n“매직슈가볼 내놔 츄!!\"",
+    "youtube": "https://youtu.be/NEKXTj5ndsk"
   },
   {
     "name": "차캐핑",
-    "description": "배려심 가득한 착한 마음의 티니핑."
+    "description": "배려심 가득한 착한 마음의 티니핑.",
+    "hp": "010-0000-0011",
+    "dialog": "\"참 잘했어요~ 정말 착한 아이네, 차캐!\"",
+    "youtube": "https://youtu.be/zthlkEptCSg"
   },
   {
     "name": "똑똑핑",
-    "description": "공부하는 것을 좋아하는, 학구열의 티니핑."
+    "description": "공부하는 것을 좋아하는, 학구열의 티니핑.",
+    "hp": "010-0000-0012",
+    "dialog": "\"조용히 좀 해줄래? 똑똑!”\n“시끄러워~! 공부하는데 방해하지 마~ 똑똑\"",
+    "youtube": "https://youtu.be/iyStA4IBtEg"
   },
   {
     "name": "공쥬핑",
-    "description": "모두에게 직위를 내리는, 우아함의 티니핑."
+    "description": "모두에게 직위를 내리는, 우아함의 티니핑.",
+    "hp": "010-0000-0013",
+    "dialog": "\"공주라면 당연히 해야 할 일인걸~! 소중한 나의 왕국은 내가 지켜낼 거야, 공쥬!\"",
+    "youtube": "https://youtu.be/Rko8klJO9Vc"
   },
   {
     "name": "떠벌핑",
-    "description": "사람들이 속으로 생각하는 것을 말하게 만들 수 있는 티니핑."
+    "description": "사람들이 속으로 생각하는 것을 말하게 만들 수 있는 티니핑.",
+    "hp": "010-0000-0014",
+    "dialog": "\"흐음~ 들어버렸네, 떠벌~? 킥!”\n“모두의 비밀을 떠벌리자~ 비밀을 말해, 떠벌~!\"",
+    "youtube": "https://youtu.be/iQlZtO7gdE8"
   },
   {
     "name": "다조핑",
-    "description": "뭐든 탐내며, 어떤 것이든지 손에 넣고 싶은 욕심의 티니핑."
+    "description": "뭐든 탐내며, 어떤 것이든지 손에 넣고 싶은 욕심의 티니핑.",
+    "hp": "010-0000-0015",
+    "dialog": "\"다 내 꺼야, 다조! 모두 다 가져올 거야, 다조!\"",
+    "youtube": "https://youtu.be/w7pIQ6ho6QI"
   },
   {
     "name": "앙대핑",
-    "description": "제멋대로 하고 싶은, 이기심의 티니핑."
+    "description": "제멋대로 하고 싶은, 이기심의 티니핑.",
+    "hp": "010-0000-0016",
+    "dialog": "\"이 몸은 앙대핑. 난, 여러 감정들을 뒤섞어서 싸움을 부추기지.”\n“내가 가진 마법으로 이 세상을 엉망진창으로 만들어주지, 앙앙!\"",
+    "youtube": "https://youtu.be/llWog7Ld5Lk"
   },
   {
     "name": "아휴핑",
-    "description": "변화하고자 노력하는, 예감의 티니핑."
+    "description": "변화하고자 노력하는, 예감의 티니핑.",
+    "hp": "010-0000-0017",
+    "dialog": "\"아휴... 좋은 소리가 안 나오네, 아휴...”\n“내 나팔소리 좀 들어볼래요? 아휴... 미안해요,[4] 근데 소리가 이렇게밖에 안 나요...\"",
+    "youtube": "https://youtu.be/cw1mpi0zCGQ"
   },
   {
     "name": "찌릿핑",
-    "description": "전기가 찌릿찌릿! 짜릿함의 티니핑."
+    "description": "전기가 찌릿찌릿! 짜릿함의 티니핑.",
+    "hp": "010-0000-0018",
+    "dialog": "\"잡힐까, 말까? 찌릿~!”\n“잡아 봐, 잡아 봐! 날 더 짜릿하게 만들어 달라고~!”\n“짜릿짜릿하니까 좋잖아? 또 짜릿한 일 있나 찾으러 가야지! 찌릿!\"",
+    "youtube": "https://youtu.be/Ada1fejSh-o"
   },
   {
     "name": "꽁꽁핑",
-    "description": "마음만은 아주 따뜻한, 냉랭함의 티니핑."
+    "description": "마음만은 아주 따뜻한, 냉랭함의 티니핑.",
+    "hp": "010-0000-0019",
+    "dialog": "\"흥~ 거기서 꽁꽁 얼어 있으라구, 꽁꽁!”\n“난, 사이좋게 지내는 아이들이 정말 싫어! 꽁꽁!\"",
+    "youtube": "https://youtu.be/v0rw-cKh5Hg"
   }
 ]
