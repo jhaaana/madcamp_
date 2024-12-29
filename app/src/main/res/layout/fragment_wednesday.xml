@@ -44,8 +44,8 @@
         android:id="@+id/iceOverlay"
         android:layout_width="400dp"
         android:layout_height="400dp"
-        android:alpha="0.5"
-        android:src="@drawable/ice"
+        android:alpha="0.4"
+        android:src="@drawable/ice_1"
         android:visibility="gone"
         android:layout_centerInParent="true" />
 

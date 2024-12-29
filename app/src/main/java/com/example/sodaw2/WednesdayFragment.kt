@@ -100,6 +100,7 @@ class WednesdayFragment : Fragment() {
 
         // 얼음 이미지뷰 초기화
         val iceOverlay: ImageView = view.findViewById(R.id.iceOverlay)
+
         // 초기 얼음 상태 업데이트
         updateIceOverlay(iceOverlay)
 
@@ -121,16 +122,17 @@ class WednesdayFragment : Fragment() {
 
             collectItemBasedOnProbability(popupTextView)
 
-            // eggImage와 동일한 크기 및 위치로 iceOverlay 동기화
-            iceOverlay.x = eggImage.x
-            iceOverlay.y = eggImage.y
-
             // 알 이미지 무작위 위치로 이동
             view.post {
+                // eggImage와 동일한 위치로 iceOverlay 동기화
+                iceOverlay.x = eggImage.x
+                iceOverlay.y = eggImage.y - 500
+                iceOverlay.layoutParams.width = eggImage.width
+                iceOverlay.layoutParams.height = (eggImage.height * 2).toInt()
+                iceOverlay.requestLayout()
                 updateIceOverlay(iceOverlay)
-                if(frozen == 0) moveEggRandomly(eggImage, view.width, view.height)
+                if(frozen == 0) moveEggRandomly(eggImage, iceOverlay, view.width, view.height)
                 else frozen--
-
             }
         }
 
@@ -251,7 +253,7 @@ class WednesdayFragment : Fragment() {
         }
     }
 
-    private fun moveEggRandomly(eggImage: ImageView, containerWidth: Int, containerHeight: Int) {
+    private fun moveEggRandomly(eggImage: ImageView, iceOverlay: ImageView, containerWidth: Int, containerHeight: Int) {
         // 이미지뷰가 컨테이너를 벗어나지 않도록 조정
         val randomX = Random.nextInt(0, containerWidth - eggImage.width)
         val randomY = Random.nextInt(0, containerHeight - eggImage.height)
@@ -262,5 +264,12 @@ class WednesdayFragment : Fragment() {
             .y(randomY.toFloat())
             .setDuration(300) // 이동 시간 (밀리초)
             .start()
+
+        iceOverlay.animate()
+            .x(randomX.toFloat())
+            .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
+            .setDuration(300) // 얼음 애니메이션
+            .start()
     }
+
 }
