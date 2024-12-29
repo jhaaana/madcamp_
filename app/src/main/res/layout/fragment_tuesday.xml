@@ -9,7 +9,7 @@
         android:id="@+id/toggleSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Developer Mode"
+        android:text="Show all"
         android:checked="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

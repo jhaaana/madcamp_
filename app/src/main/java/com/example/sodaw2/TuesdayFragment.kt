@@ -23,20 +23,11 @@ class TuesdayFragment : Fragment() {
         // ViewModel 초기화
 
         // Find views
-        // val toggleSwitch: Switch = view.findViewById(R.id.toggleSwitch)
+        val toggleSwitch: Switch = view.findViewById(R.id.toggleSwitch)
         val grid1: RecyclerView = view.findViewById(R.id.grid1)
 
         // 초기 상태를 꺼짐으로 설정
-        // toggleSwitch.isChecked = false
-
-        /*val hiddenDataSet1 = dataSet1.map {
-            GridItem(R.drawable.question_mark, "???", "???", "UN") // Placeholder
-        }*/
-
-        // Set up the adapter
-        // val adapter = GridAdapter(SharedData.dataSet1) // Mutable list for dynamic changes
-        // grid1.layoutManager = GridLayoutManager(context, 2)
-        // grid1.adapter = adapter
+        toggleSwitch.isChecked = false
 
         adapter = GridAdapter(SharedData.dataSet1.value ?: mutableListOf())
         grid1.layoutManager = GridLayoutManager(context, 2)
@@ -48,21 +39,21 @@ class TuesdayFragment : Fragment() {
         }
 
         // Add listener to toggle between datasets
-        /*toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
+        toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                showPasswordDialog { isCorrect ->
-                    if (isCorrect) {
-                        adapter.updateData(dataSet1)
-                    } else {
-                        toggleSwitch.isChecked = false
-                        Toast.makeText(context, "Incorrect password!", Toast.LENGTH_SHORT).show()
-                    }
-                }
+//                showPasswordDialog { isCorrect ->
+//                    if (isCorrect) {
+//                        adapter.updateData(dataSet1)
+//                    } else {
+//                        toggleSwitch.isChecked = false
+//                        Toast.makeText(context, "Incorrect password!", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
             } else {
-                adapter.updateData(hiddenDataSet1)
+//                adapter.updateData(hiddenDataSet1)
             }
 
-        }*/
+        }
 
         return view
     }
