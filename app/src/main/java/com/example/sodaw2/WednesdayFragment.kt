@@ -149,8 +149,7 @@ class WednesdayFragment : Fragment() {
                 // score = 0
 
                 // 노멀 티니핑들 배열..
-                // val randomTiniPing = normalTiniPings.keys.random()
-                val randomTiniPing = "꽁꽁핑"
+                val randomTiniPing = normalTiniPings.keys.random()
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
