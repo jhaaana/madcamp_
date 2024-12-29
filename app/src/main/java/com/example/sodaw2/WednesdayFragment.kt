@@ -48,6 +48,7 @@ class WednesdayFragment : Fragment() {
         // *** score = sharedPreferences.getInt(SCORE_KEY, 0)
         // *** normalProbability = sharedPreferences.getInt("normal_probability", 0)
 
+
         // 텍스트와 이미지뷰 초기화
         val scoreText: TextView = view.findViewById(R.id.scoreText)
         val eggImage: ImageView = view.findViewById(R.id.eggImage)
@@ -63,7 +64,7 @@ class WednesdayFragment : Fragment() {
 
             // 점수에 따라 확률 업데이트 (10회마다)
             if (score % 10 == 0) {
-                normalProbability += 10
+                normalProbability += 1
                 // *** sharedPreferences.edit().putInt("normal_probability", normalProbability).apply()
             }
 
