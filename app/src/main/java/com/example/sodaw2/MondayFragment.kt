@@ -18,22 +18,9 @@ class MondayFragment : Fragment() {
         val dialogue: String,
         val youtube: String
     )
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_monday, container, false)
 
-        val jsonString = requireContext().readJsonFileFromAssets("contacts.json")
-        val gson = Gson()
-        val contactList: List<Contact> = gson.fromJson(jsonString, object : TypeToken<List<Contact>>() {}.type)
-
-        val listView: ListView = rootView.findViewById(R.id.listView)
-        // val formattedContacts = contactList.map { "${it.name}: ${it.phone}" }
-        val adapter = ContactAdapter(requireContext(), contactList)
-        listView.adapter = adapter
-
-        // 이름-이미지 맵 생성
+    // 이름-이미지 맵 생성
+    companion object {
         val imageMap = mapOf(
             "무셔핑" to R.drawable.image24,
             "시러핑" to R.drawable.image10,
@@ -56,6 +43,24 @@ class MondayFragment : Fragment() {
             "찌릿핑" to R.drawable.image5,
             "꽁꽁핑" to R.drawable.image4
         )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val rootView = inflater.inflate(R.layout.fragment_monday, container, false)
+
+        val jsonString = requireContext().readJsonFileFromAssets("contacts.json")
+        val gson = Gson()
+        val contactList: List<Contact> = gson.fromJson(jsonString, object : TypeToken<List<Contact>>() {}.type)
+
+        val listView: ListView = rootView.findViewById(R.id.listView)
+
+        val adapter = ContactAdapter(requireContext(), contactList)
+        listView.adapter = adapter
+
+
 
         // 클릭 이벤트 처리
         listView.setOnItemClickListener { _, _, position, _ ->

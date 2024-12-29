@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="horizontal"
-    android:padding="8dp"
-    android:gravity="center_vertical">
+    android:layout_height="60dp">
 
-    <!-- 이름 텍스트 (좌측 정렬) -->
-<TextView
-android:id="@+id/tvName"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:layout_weight="1"
-android:textSize="20sp"
-android:textColor="#000000"
-android:textStyle="bold" />
+    <!-- 배경 이미지 -->
+    <ImageView
+        android:id="@+id/backgroundImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.2" /> <!-- 투명도 설정 -->
 
-    <!-- 설명 텍스트 (우측 정렬) -->
-<TextView
-android:id="@+id/tvDescription"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:textSize="13sp"
-android:textColor="#7E7E7E"
-android:gravity="end" />
-    </LinearLayout>
+    <!-- 이름 텍스트 -->
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp" />
+
+    <!-- 설명 텍스트 -->
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:textSize="13sp"
+        android:textColor="#7E7E7E"
+        android:layout_marginEnd="16dp" />
+</RelativeLayout>
