@@ -6,7 +6,8 @@ data class GridItem(
     val name: String,
     val description: String,
     val rank: String,
-    var isHidden: Boolean = true
+    var isHidden: Boolean = true,
+    var isShown: Boolean = false
 ) {
     val rankColor: Int
         get() = when (rank) {

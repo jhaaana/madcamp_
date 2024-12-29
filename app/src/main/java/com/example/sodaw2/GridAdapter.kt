@@ -32,7 +32,7 @@ class GridAdapter(private var dataSet: MutableList<GridItem>) : RecyclerView.Ada
         // holder.nameTextView.text = gridItem.name
         // holder.itemDescription.text = gridItem.description
 
-        if (gridItem.isHidden) {
+        if (gridItem.isHidden && !gridItem.isShown) {
             holder.imageView.setImageResource(R.drawable.question_mark)
             holder.nameTextView.text = ""
             holder.itemDescription.text = ""
