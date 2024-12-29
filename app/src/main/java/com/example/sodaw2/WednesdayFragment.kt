@@ -97,7 +97,7 @@ class WednesdayFragment : Fragment() {
 
             // 알 이미지 무작위 위치로 이동
             view.post {
-                // moveEggRandomly(eggImage, view.width, view.height)
+                moveEggRandomly(eggImage, view.width, view.height)
             }
         }
 

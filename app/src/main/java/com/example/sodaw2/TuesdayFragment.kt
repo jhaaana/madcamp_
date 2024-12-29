@@ -41,19 +41,8 @@ class TuesdayFragment : Fragment() {
 
         // Add listener to toggle between datasets
         toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                /*showPasswordDialog { isCorrect ->
-                    if (isCorrect) {
-                        adapter.updateData(dataSet1)
-                    } else {
-                        toggleSwitch.isChecked = false
-                        Toast.makeText(context, "Incorrect password!", Toast.LENGTH_SHORT).show()
-                    }
-                }*/
-            } else {
-                // adapter.updateData(hiddenDataSet1)
-            }
-
+            // 모든 GridItem의 isShown 속성을 반대로 전환
+            SharedData.toggleAllGridItemsVisibility()
         }
 
         return view
