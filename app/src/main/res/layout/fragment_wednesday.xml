@@ -40,4 +40,13 @@
         android:src= "@drawable/romi"
         android:layout_centerInParent="true" />
 
+    <ImageView
+        android:id="@+id/iceOverlay"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:alpha="0.5"
+        android:src="@drawable/ice"
+        android:visibility="gone"
+        android:layout_centerInParent="true" />
+
 </RelativeLayout>

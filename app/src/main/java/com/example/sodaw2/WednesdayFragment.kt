@@ -24,6 +24,9 @@ class WednesdayFragment : Fragment() {
     private var superRareProbability = 0
     private var hiddenProbability = 0
 
+    // 꽁꽁핑 변수
+    private var frozen = 0
+
     // 등급별 티니핑 이름
     private val normalTiniPings = mapOf(
         "무셔핑" to R.drawable.image24,
@@ -53,9 +56,28 @@ class WednesdayFragment : Fragment() {
         "하츄핑" to R.drawable.image3,
         "악동핑" to R.drawable.image12
     )
-    /*private val hiddenTiniPings = mapOf(
-
-    )*/
+    private val isTiniPingCollected = mutableMapOf(
+        "무셔핑" to false,
+        "시러핑" to false,
+        "덜덜핑" to false,
+        "그림핑" to false,
+        "무거핑" to false,
+        "똑똑핑" to false,
+        "찌릿핑" to false,
+        "꽁꽁핑" to false,
+        "떠벌핑" to false,
+        "다조핑" to false,
+        "베베핑" to false,
+        "차캐핑" to false,
+        "코자핑" to false,
+        "모야핑" to false,
+        "아휴핑" to false,
+        "앙대핑" to false,
+        "바네핑" to false,
+        "공쥬핑" to false,
+        "하츄핑" to false,
+        "악동핑" to false
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +98,11 @@ class WednesdayFragment : Fragment() {
         // 초기 점수 표시
         scoreText.text = "Score: $score"
 
+        // 얼음 이미지뷰 초기화
+        val iceOverlay: ImageView = view.findViewById(R.id.iceOverlay)
+        // 초기 얼음 상태 업데이트
+        updateIceOverlay(iceOverlay)
+
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
             score++ // 점수 증가
@@ -94,9 +121,16 @@ class WednesdayFragment : Fragment() {
 
             collectItemBasedOnProbability(popupTextView)
 
+            // eggImage와 동일한 크기 및 위치로 iceOverlay 동기화
+            iceOverlay.x = eggImage.x
+            iceOverlay.y = eggImage.y
+
             // 알 이미지 무작위 위치로 이동
             view.post {
-                moveEggRandomly(eggImage, view.width, view.height)
+                updateIceOverlay(iceOverlay)
+                if(frozen == 0) moveEggRandomly(eggImage, view.width, view.height)
+                else frozen--
+
             }
         }
 
@@ -113,7 +147,8 @@ class WednesdayFragment : Fragment() {
                 // score = 0
 
                 // 노멀 티니핑들 배열..
-                val randomTiniPing = normalTiniPings.keys.random()
+                // val randomTiniPing = normalTiniPings.keys.random()
+                val randomTiniPing = "꽁꽁핑"
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
@@ -162,10 +197,24 @@ class WednesdayFragment : Fragment() {
     }
 
     private fun showPopupMessage(popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {
-        // 팝업 메시지 보이기
-        popupMessage.text = "$tiniPingName($tiniPingRank)을 습득했습니다!"
-        popupMessage.visibility = View.VISIBLE
+        if(isTiniPingCollected[tiniPingName] == false) { // 수집 안된 티니핑
+                isTiniPingCollected[tiniPingName] = true
+                popupMessage.text = "$tiniPingName($tiniPingRank)을 습득했습니다!"
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+            }
+        else{ // tiniPingName에 해당하는 티니핑이 수집되었음을 의미하니깐,
+            // 이제 여기서 티니핑별 함수? 구현하면됨
+            if(tiniPingName == "꽁꽁핑" && frozen == 0) { // 꽁꽁핑 버프: 로미 100회동안 안움직이게
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 움직이지 않습니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                frozen = 10
+            }
+        }
+    }
 
+    private fun zinPopupMessage(popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {
         val rankColor = when (tiniPingRank) {
             "노멀" -> R.drawable.gradation_blue
             "에픽" -> R.drawable.green_gradinet
@@ -191,9 +240,16 @@ class WednesdayFragment : Fragment() {
                         .start()
                 }, 2000) // 2초 후에 사라짐
             }
-            .start()
+        .start()
     }
 
+    private fun updateIceOverlay(iceOverlay: ImageView) {
+        if (frozen > 0) {
+            iceOverlay.visibility = View.VISIBLE
+        } else {
+            iceOverlay.visibility = View.GONE
+        }
+    }
 
     private fun moveEggRandomly(eggImage: ImageView, containerWidth: Int, containerHeight: Int) {
         // 이미지뷰가 컨테이너를 벗어나지 않도록 조정
