@@ -68,7 +68,6 @@ class WednesdayFragment : Fragment() {
         // *** score = sharedPreferences.getInt(SCORE_KEY, 0)
         // *** normalProbability = sharedPreferences.getInt("normal_probability", 0)
 
-
         // 텍스트와 이미지뷰 초기화
         val scoreText: TextView = view.findViewById(R.id.scoreText)
         val eggImage: ImageView = view.findViewById(R.id.eggImage)
