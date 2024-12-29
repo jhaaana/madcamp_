@@ -35,8 +35,8 @@
     <!-- 알 이미지 -->
     <ImageView
         android:id="@+id/eggImage"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:src= "@drawable/romi"
         android:layout_centerInParent="true" />
 
