@@ -10,4 +10,7 @@
     <color name="orange">#FF9800</color>
     <color name="green">#B7E892</color>
     <color name="gold">#FFC42E</color>
+    <color name="pink">#FFEF94</color>
+    <color name="strongpink">#FF7700</color>
+    <color name="weakpink">#FFFBB8</color>
 </resources>

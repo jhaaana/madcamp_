@@ -25,7 +25,8 @@ object SharedData {
             GridItem(R.drawable.image11, "바네핑","레어", "R", true),
             GridItem(R.drawable.image23, "공쥬핑","레어", "R", true),
             GridItem(R.drawable.image3, "하츄핑","슈퍼레어", "SR", true),
-        )
+            GridItem(R.drawable.image12, "악동핑","히든", "H", true),
+            )
     )
     val dataSet1: LiveData<MutableList<GridItem>> get() = _dataSet1
 

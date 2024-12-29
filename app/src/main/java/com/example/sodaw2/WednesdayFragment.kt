@@ -20,6 +20,7 @@ class WednesdayFragment : Fragment() {
     // 등급별 수집 확률
     private var normalProbability = 0
     private var epicProbability = 0
+    private var rareProbability = 0
     private var superRareProbability = 0
     private var hiddenProbability = 0
 
@@ -36,6 +37,25 @@ class WednesdayFragment : Fragment() {
         "떠벌핑" to R.drawable.image7,
         "다조핑" to R.drawable.image8
     )
+    private val epicTiniPings = mapOf(
+        "베베핑" to R.drawable.image18,
+        "차캐핑" to R.drawable.image6,
+        "코자핑" to R.drawable.image19,
+        "모야핑" to R.drawable.image20,
+        "아휴핑" to R.drawable.image21
+    )
+    private val rareTiniPings = mapOf(
+        "앙대핑" to R.drawable.image22,
+        "바네핑" to R.drawable.image11,
+        "공쥬핑" to R.drawable.image23
+    )
+    private val superRareTiniPings = mapOf(
+        "하츄핑" to R.drawable.image3,
+        "악동핑" to R.drawable.image12
+    )
+    /*private val hiddenTiniPings = mapOf(
+
+    )*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,10 +83,12 @@ class WednesdayFragment : Fragment() {
             scoreText.text = "Score: $score"
 
             // 점수에 따라 확률 업데이트 (10회마다)
-            if (score % 10 == 0) {
-                normalProbability += 1
+            if (score > 10) normalProbability += 10
+            if (score > 20) epicProbability += 10
+            if (score > 30) rareProbability += 10
+            if (score > 40) superRareProbability += 10
+
                 // *** sharedPreferences.edit().putInt("normal_probability", normalProbability).apply()
-            }
 
             // 점수를 SharedPreferences에 저장
             // *** sharedPreferences.edit().putInt(SCORE_KEY, score).apply()
@@ -75,7 +97,7 @@ class WednesdayFragment : Fragment() {
 
             // 알 이미지 무작위 위치로 이동
             view.post {
-                //moveEggRandomly(eggImage, view.width, view.height)
+                // moveEggRandomly(eggImage, view.width, view.height)
             }
         }
 
@@ -98,6 +120,45 @@ class WednesdayFragment : Fragment() {
 
                 showPopupMessage(popupMessage, randomTiniPing, "노멀")
             }
+            rand < epicProbability -> {
+                // 에픽 아이템 수집
+                // println("노멀 아이템 수집!")
+                epicProbability = 0
+                // score = 0
+
+                // 노멀 티니핑들 배열..
+                val randomTiniPing = epicTiniPings.keys.random()
+
+                SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
+
+                showPopupMessage(popupMessage, randomTiniPing, "에픽")
+            }
+            rand < rareProbability -> {
+                // 레어 아이템 수집
+                // println("노멀 아이템 수집!")
+                rareProbability = 0
+                // score = 0
+
+                // 노멀 티니핑들 배열..
+                val randomTiniPing = rareTiniPings.keys.random()
+
+                SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
+
+                showPopupMessage(popupMessage, randomTiniPing, "레어")
+            }
+            rand < superRareProbability -> {
+                // 에픽 아이템 수집
+                // println("노멀 아이템 수집!")
+                superRareProbability = 0
+                // score = 0
+
+                // 노멀 티니핑들 배열..
+                val randomTiniPing = superRareTiniPings.keys.random()
+
+                SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
+
+                showPopupMessage(popupMessage, randomTiniPing, "슈퍼레어")
+            }
         }
     }
 
@@ -106,6 +167,15 @@ class WednesdayFragment : Fragment() {
         popupMessage.text = "$tiniPingName($tiniPingRank)을 습득했습니다!"
         popupMessage.visibility = View.VISIBLE
 
+        val rankColor = when (tiniPingRank) {
+            "노멀" -> R.drawable.gradation_blue
+            "에픽" -> R.drawable.green_gradinet
+            "레어" -> R.drawable.gradient_purple
+            "슈퍼레어" -> R.drawable.gold_gradient
+            "히든" -> R.drawable.hiddenfinal_1
+            else -> R.drawable.unknown_gradient
+        }
+        popupMessage.setBackgroundResource(rankColor)
         // 애니메이션 적용 (짧게 펴졌다 사라지는 효과)
         popupMessage.animate()
             .alpha(1f)  // 투명도 1로 설정 (보이게)
