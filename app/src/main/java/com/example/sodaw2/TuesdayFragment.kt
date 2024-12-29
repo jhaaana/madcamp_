@@ -41,16 +41,16 @@ class TuesdayFragment : Fragment() {
         // Add listener to toggle between datasets
         toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-//                showPasswordDialog { isCorrect ->
-//                    if (isCorrect) {
-//                        adapter.updateData(dataSet1)
-//                    } else {
-//                        toggleSwitch.isChecked = false
-//                        Toast.makeText(context, "Incorrect password!", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
+                /*showPasswordDialog { isCorrect ->
+                    if (isCorrect) {
+                        adapter.updateData(dataSet1)
+                    } else {
+                        toggleSwitch.isChecked = false
+                        Toast.makeText(context, "Incorrect password!", Toast.LENGTH_SHORT).show()
+                    }
+                }*/
             } else {
-//                adapter.updateData(hiddenDataSet1)
+                // adapter.updateData(hiddenDataSet1)
             }
 
         }
