@@ -37,6 +37,13 @@ class WednesdayFragment : Fragment() {
     // 덜덜핑 변수
     private var cold = 0
 
+    //차캐핑(에픽)
+    private var twice = 0
+    //바네핑
+    private var bane = 0
+
+    private var enlarge = 0
+
     // 등급별 티니핑 이름
     private val normalTiniPings = mapOf(
         "무셔핑" to R.drawable.image24,
@@ -115,13 +122,41 @@ class WednesdayFragment : Fragment() {
         updateIceOverlay(iceOverlay)
 
         if(cold > 0) startShaking(eggImage)
+        /*if(bane > 0) score += 5
+        if(twice > 0) score += 2*/
 
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
             if(cold > 0) cold--
             else stopShaking()
 
-            score++ // 점수 증가
+            if(enlarge > 0 ){
+                enlarge--
+                val density = resources.displayMetrics.density
+                eggImage.layoutParams = eggImage.layoutParams.apply{
+                    width = (300 * density).toInt()
+                    height = (300 * density).toInt()
+                }
+            }else{
+                val density = resources.displayMetrics.density
+                eggImage.layoutParams = eggImage.layoutParams.apply{
+                    width = (200 * density).toInt()
+                    height = (200 * density).toInt()
+                }
+            }
+            // twice가 0보다 큰 경우에는 점수를 2씩 증가
+            if (bane > 0){
+                bane--
+                score += 5
+            }
+            else if (twice > 0) {
+                twice--
+                score += 2
+            }
+            else {
+                score++ // 일반적인 경우 점수 1 증가
+            }
+            //score++ // 점수 증가
             scoreText.text = "Score: $score"
 
             // 점수에 따라 확률 업데이트 (10회마다)
@@ -141,13 +176,13 @@ class WednesdayFragment : Fragment() {
             view.post {
                 // eggImage와 동일한 위치로 iceOverlay 동기화
                 iceOverlay.x = eggImage.x
-                iceOverlay.y = eggImage.y - 500
+                iceOverlay.y = eggImage.y - 350
                 iceOverlay.layoutParams.width = eggImage.width
                 iceOverlay.layoutParams.height = (eggImage.height * 2).toInt()
                 iceOverlay.requestLayout()
                 updateIceOverlay(iceOverlay)
-                if(frozen == 0) moveEggRandomly(eggImage, iceOverlay, view.width, view.height)
-                else frozen--
+                //if(frozen == 0) moveEggRandomly(eggImage, iceOverlay, view.width, view.height)
+                //else frozen--
             }
         }
 
@@ -245,7 +280,28 @@ class WednesdayFragment : Fragment() {
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 cold = 10
             }
+            else if(tiniPingName == "차캐핑" &&   twice == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 2배의 점수를 적용합니다"
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                twice = 10
+
+            }
+            else if(tiniPingName == "바네핑" &&   bane == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 5배의 점수를 적용합니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                bane= 10
+            }
+            else if(tiniPingName == "공쥬핑" &&   enlarge == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 크기가 증가합니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                enlarge= 10
+            }
         }
+
+
     }
 
     private fun zinPopupMessage(popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {
