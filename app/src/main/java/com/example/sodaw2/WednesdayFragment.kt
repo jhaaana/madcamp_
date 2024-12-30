@@ -116,6 +116,12 @@ class WednesdayFragment : Fragment() {
         val eggImage: ImageView = view.findViewById(R.id.eggImage)
         val popupTextView: TextView = view.findViewById(R.id.popupTextView)
 
+        val density = resources.displayMetrics.density
+        eggImage.layoutParams = eggImage.layoutParams.apply{
+            width = (200 * density).toInt()
+            height = (200 * density).toInt()
+        }
+
         // 초기 점수 표시
         scoreText.text = "Score: $score"
 
@@ -139,20 +145,6 @@ class WednesdayFragment : Fragment() {
             if(cold > 0) cold--
             else stopShaking()
 
-            if(enlarge > 0 ){
-                enlarge--
-                val density = resources.displayMetrics.density
-                eggImage.layoutParams = eggImage.layoutParams.apply{
-                    width = (300 * density).toInt()
-                    height = (300 * density).toInt()
-                }
-            }else{
-                val density = resources.displayMetrics.density
-                eggImage.layoutParams = eggImage.layoutParams.apply{
-                    width = (200 * density).toInt()
-                    height = (200 * density).toInt()
-                }
-            }
             // twice가 0보다 큰 경우에는 점수를 2씩 증가
             if (bane > 0){
                 bane--
@@ -191,7 +183,14 @@ class WednesdayFragment : Fragment() {
 
             collectItemBasedOnProbability(popupTextView)
 
-            if(small > 0) {
+            if(enlarge > 0 ){
+                enlarge--
+                val density = resources.displayMetrics.density
+                eggImage.layoutParams = eggImage.layoutParams.apply{
+                    width = (300 * density).toInt()
+                    height = (300 * density).toInt()
+                }
+            }else if(small > 0) {
                 small--
                 val density = resources.displayMetrics.density
                 eggImage.layoutParams = eggImage.layoutParams.apply {
@@ -199,11 +198,11 @@ class WednesdayFragment : Fragment() {
                     height = (100 * density).toInt() // 높이 변경
                 }
             }
-            else { // small == 0
+            else {
                 val density = resources.displayMetrics.density
-                eggImage.layoutParams = eggImage.layoutParams.apply {
-                    width = (200 * density).toInt() // 너비 변경
-                    height = (200 * density).toInt() // 높이 변경
+                eggImage.layoutParams = eggImage.layoutParams.apply{
+                    width = (200 * density).toInt()
+                    height = (200 * density).toInt()
                 }
             }
 
@@ -361,17 +360,15 @@ class WednesdayFragment : Fragment() {
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 5배의 점수를 적용합니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
-                bane= 10
+                bane = 10
             }
             else if(tiniPingName == "공쥬핑" &&   enlarge == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 크기가 증가합니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
-                enlarge= 10
+                enlarge = 10
             }
         }
-
-
     }
 
     private fun zinPopupMessage(popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {
