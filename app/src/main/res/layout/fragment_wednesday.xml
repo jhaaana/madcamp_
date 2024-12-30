@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5">
@@ -31,22 +32,12 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="48dp" />
 
-
     <!-- 알 이미지 -->
     <ImageView
         android:id="@+id/eggImage"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:src= "@drawable/romi"
-        android:layout_centerInParent="true" />
-
-    <ImageView
-        android:id="@+id/iceOverlay"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:alpha="0.4"
-        android:src="@drawable/ice_1"
-        android:visibility="gone"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/romi"
         android:layout_centerInParent="true" />
 
 </RelativeLayout>

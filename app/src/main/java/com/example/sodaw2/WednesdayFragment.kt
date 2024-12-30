@@ -1,6 +1,5 @@
 package com.example.sodaw2
 
-import android.content.Context
 import android.os.Bundle
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
@@ -14,8 +13,7 @@ import androidx.fragment.app.Fragment
 import kotlin.random.Random
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-
+import androidx.core.content.ContextCompat
 
 class WednesdayFragment : Fragment() {
     private var score = 0
@@ -36,6 +34,12 @@ class WednesdayFragment : Fragment() {
     private var heavy = 0
     // 덜덜핑 변수
     private var cold = 0
+    // 앙대핑 변수
+    private var small = 0
+    // 악동핑 변수
+    private var evil = 0
+    // 코자핑 변수
+    private var isSleeping = false
 
     // 등급별 티니핑 이름
     private val normalTiniPings = mapOf(
@@ -108,16 +112,21 @@ class WednesdayFragment : Fragment() {
         // 초기 점수 표시
         scoreText.text = "Score: $score"
 
-        // 얼음 이미지뷰 초기화
-        val iceOverlay: ImageView = view.findViewById(R.id.iceOverlay)
-
-        // 초기 얼음 상태 업데이트
-        updateIceOverlay(iceOverlay)
+        // 원하는 색상을 덧씌우기 (예: 반투명 파란색)
+        val overlayColor = resources.getColor(R.color.ice, null)
 
         if(cold > 0) startShaking(eggImage)
 
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
+            if (isSleeping) {
+                // 잠들어 있는 경우 팝업 메시지 표시
+                popupTextView.text = "로미가 잠들어 있습니다.. 조금만 기다려주세요!"
+                popupTextView.visibility = View.VISIBLE
+                zinPopupMessage(popupTextView, "코자핑", "SR")
+                return@setOnClickListener // 리스너 실행 중단
+            }
+
             if(cold > 0) cold--
             else stopShaking()
 
@@ -130,23 +139,50 @@ class WednesdayFragment : Fragment() {
             if (score > 30) rareProbability += 10
             if (score > 40) superRareProbability += 10
 
-                // *** sharedPreferences.edit().putInt("normal_probability", normalProbability).apply()
+            // *** sharedPreferences.edit().putInt("normal_probability", normalProbability).apply()
 
             // 점수를 SharedPreferences에 저장
             // *** sharedPreferences.edit().putInt(SCORE_KEY, score).apply()
 
+            val randomValue = (0..999999).random()
+            if(randomValue < evil) {
+                score = 0
+                scoreText.text = "Score: $score"
+                popupTextView.text = "악동핑 의 가호!\n점수가 초기화됩니다.."
+                popupTextView.visibility = View.VISIBLE
+                zinPopupMessage(popupTextView, "악동핑", "SR")
+                return@setOnClickListener
+            }
+
             collectItemBasedOnProbability(popupTextView)
+
+            if(small > 0) {
+                small--
+                val density = resources.displayMetrics.density
+                eggImage.layoutParams = eggImage.layoutParams.apply {
+                    width = (100 * density).toInt() // 너비 변경
+                    height = (100 * density).toInt() // 높이 변경
+                }
+            }
+            else { // small == 0
+                val density = resources.displayMetrics.density
+                eggImage.layoutParams = eggImage.layoutParams.apply {
+                    width = (200 * density).toInt() // 너비 변경
+                    height = (200 * density).toInt() // 높이 변경
+                }
+            }
+
+            /*if(frozen > 0) eggImage.setColorFilter(overlayColor, android.graphics.PorterDuff.Mode.SRC_ATOP)
+            else eggImage.clearColorFilter()*/
+            if(frozen > 0) {
+                frozen--
+                eggImage.setColorFilter(overlayColor, android.graphics.PorterDuff.Mode.SRC_ATOP)
+            }
+            else eggImage.clearColorFilter()
 
             // 알 이미지 무작위 위치로 이동
             view.post {
-                // eggImage와 동일한 위치로 iceOverlay 동기화
-                iceOverlay.x = eggImage.x
-                iceOverlay.y = eggImage.y - 500
-                iceOverlay.layoutParams.width = eggImage.width
-                iceOverlay.layoutParams.height = (eggImage.height * 2).toInt()
-                iceOverlay.requestLayout()
-                updateIceOverlay(iceOverlay)
-                if(frozen == 0) moveEggRandomly(eggImage, iceOverlay, view.width, view.height)
+                if(frozen == 0) moveEggRandomly(eggImage, view.width, view.height)
                 else frozen--
             }
         }
@@ -176,7 +212,7 @@ class WednesdayFragment : Fragment() {
                 epicProbability = 0
                 // score = 0
 
-                // 노멀 티니핑들 배열..
+                // 에픽 티니핑들 배열..
                 val randomTiniPing = epicTiniPings.keys.random()
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
@@ -189,7 +225,7 @@ class WednesdayFragment : Fragment() {
                 rareProbability = 0
                 // score = 0
 
-                // 노멀 티니핑들 배열..
+                // 레어 티니핑들 배열..
                 val randomTiniPing = rareTiniPings.keys.random()
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
@@ -202,7 +238,7 @@ class WednesdayFragment : Fragment() {
                 superRareProbability = 0
                 // score = 0
 
-                // 노멀 티니핑들 배열..
+                // 슈퍼레어 티니핑들 배열..
                 val randomTiniPing = superRareTiniPings.keys.random()
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
@@ -244,6 +280,40 @@ class WednesdayFragment : Fragment() {
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 cold = 10
+            }
+            else if(tiniPingName == "앙대핑" && small == 0) { // 앙대핑 버프: 로미 100회동안 크기 감소
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 크기가 감소합니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                small = 10
+            }
+            else if(tiniPingName == "시러핑") { // 시러핑 버프: 로미가 수집한 노멀티니핑하나 없앰
+                popupMessage.text = "$tiniPingName 의 가호!\n수집된 노멀 티니핑들 중 한 마리를 잃어버렸습니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                val deletedTiniPing = normalTiniPings.keys.random()
+                isTiniPingCollected[deletedTiniPing] = false
+                SharedData.updateGridItem(name = deletedTiniPing, isHidden = true)
+            }
+            else if(tiniPingName == "모야핑") { // 모야핑 버프: 로미가 미수집한 에픽티니핑하나 수집
+                popupMessage.text = "$tiniPingName 의 가호!\n미수집된 에픽 티니핑들 중 한 마리를 수집했습니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                val collectedTiniPing = epicTiniPings.keys.random()
+                isTiniPingCollected[collectedTiniPing] = true
+                SharedData.updateGridItem(name = collectedTiniPing, isHidden = false)
+            }
+            else if(tiniPingName == "악동핑") evil = 500
+            else if (tiniPingName == "코자핑") { // 코자핑의 가호: 100초 동안 터치 차단
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100초 동안 잠들었습니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+
+                // 코자핑 가호 활성화
+                isSleeping = true
+                Handler(Looper.getMainLooper()).postDelayed({
+                    isSleeping = false // 100초 후 터치 가능
+                }, 10_000) // 100초 (100,000ms)
             }
         }
     }
@@ -287,10 +357,10 @@ class WednesdayFragment : Fragment() {
 
     private var shakeAnimator: ObjectAnimator? = null
 
-    private fun moveEggRandomly(eggImage: ImageView, iceOverlay: ImageView, containerWidth: Int, containerHeight: Int) {
+    private fun moveEggRandomly(eggImage: ImageView, containerWidth: Int, containerHeight: Int) {
         // 이미지뷰가 컨테이너를 벗어나지 않도록 조정
-        val randomX = Random.nextInt(-400, 400)
-        val randomY = Random.nextInt(60, containerHeight - eggImage.height - 230)
+        val randomX = Random.nextInt(0, containerWidth - eggImage.width) // X 좌표
+        val randomY = Random.nextInt(0, containerHeight - eggImage.height) // Y 좌표
 
         shakeAnimator?.cancel()
 
@@ -305,15 +375,9 @@ class WednesdayFragment : Fragment() {
                     if(cold > 0) startShaking(eggImage)
                 }
                 .start()
-
-            iceOverlay.animate()
-                .x(randomX.toFloat())
-                .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
-                .setDuration(300) // 얼음 애니메이션
-                .start()
         }
         else {
-            if(spark > 0) {
+            if(spark > heavy) {
                 spark--
                 // 애니메이션 효과로 위치 이동
                 eggImage.animate()
@@ -324,12 +388,6 @@ class WednesdayFragment : Fragment() {
                         // 이동 후 새로운 떨림 애니메이션 시작
                         if(cold > 0) startShaking(eggImage)
                     }
-                    .start()
-
-                iceOverlay.animate()
-                    .x(randomX.toFloat())
-                    .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
-                    .setDuration(50) // 얼음 애니메이션
                     .start()
             }
             else {
@@ -343,12 +401,6 @@ class WednesdayFragment : Fragment() {
                         // 이동 후 새로운 떨림 애니메이션 시작
                         if(cold > 0) startShaking(eggImage)
                     }
-                    .start()
-
-                iceOverlay.animate()
-                    .x(randomX.toFloat())
-                    .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
-                    .setDuration(600) // 얼음 애니메이션
                     .start()
             }
         }
