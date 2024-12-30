@@ -2,6 +2,9 @@ package com.example.sodaw2
 
 import android.content.Context
 import android.os.Bundle
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,7 @@ import androidx.fragment.app.Fragment
 import kotlin.random.Random
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 
 
 class WednesdayFragment : Fragment() {
@@ -26,6 +30,12 @@ class WednesdayFragment : Fragment() {
 
     // 꽁꽁핑 변수
     private var frozen = 0
+    // 찌릿핑 변수
+    private var spark = 0
+    // 무거핑 변수
+    private var heavy = 0
+    // 덜덜핑 변수
+    private var cold = 0
 
     // 등급별 티니핑 이름
     private val normalTiniPings = mapOf(
@@ -104,8 +114,13 @@ class WednesdayFragment : Fragment() {
         // 초기 얼음 상태 업데이트
         updateIceOverlay(iceOverlay)
 
+        if(cold > 0) startShaking(eggImage)
+
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
+            if(cold > 0) cold--
+            else stopShaking()
+
             score++ // 점수 증가
             scoreText.text = "Score: $score"
 
@@ -212,6 +227,24 @@ class WednesdayFragment : Fragment() {
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 frozen = 10
             }
+            else if(tiniPingName == "찌릿핑" && spark == 0) { // 찌릿핑 버프: 로미 100회동안 이동속도 증가
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 더 빠르게 움직입니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                spark = 10
+            }
+            else if(tiniPingName == "무거핑" && heavy == 0) { // 무거핑 버프: 로미 100회동안 이동속도 감소
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 더 느리게 움직입니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                heavy = 10
+            }
+            else if(tiniPingName == "덜덜핑" && cold == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 덜덜 떱니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                cold = 10
+            }
         }
     }
 
@@ -239,7 +272,7 @@ class WednesdayFragment : Fragment() {
                             popupMessage.visibility = View.GONE // 완전히 사라지면 숨김
                         }
                         .start()
-                }, 2000) // 2초 후에 사라짐
+                }, 3500) // 3.5초 후에 사라짐
             }
         .start()
     }
@@ -252,23 +285,95 @@ class WednesdayFragment : Fragment() {
         }
     }
 
+    private var shakeAnimator: ObjectAnimator? = null
+
     private fun moveEggRandomly(eggImage: ImageView, iceOverlay: ImageView, containerWidth: Int, containerHeight: Int) {
         // 이미지뷰가 컨테이너를 벗어나지 않도록 조정
-        val randomX = Random.nextInt(0, containerWidth - eggImage.width)
-        val randomY = Random.nextInt(0, containerHeight - eggImage.height)
+        val randomX = Random.nextInt(-400, 400)
+        val randomY = Random.nextInt(60, containerHeight - eggImage.height - 230)
 
-        // 애니메이션 효과로 위치 이동
-        eggImage.animate()
-            .x(randomX.toFloat())
-            .y(randomY.toFloat())
-            .setDuration(300) // 이동 시간 (밀리초)
-            .start()
+        shakeAnimator?.cancel()
 
-        iceOverlay.animate()
-            .x(randomX.toFloat())
-            .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
-            .setDuration(300) // 얼음 애니메이션
-            .start()
+        if(spark == 0 && heavy == 0) {
+            // 애니메이션 효과로 위치 이동
+            eggImage.animate()
+                .x(randomX.toFloat())
+                .y(randomY.toFloat())
+                .setDuration(300) // 이동 시간 (밀리초)
+                .withEndAction {
+                    // 이동 후 새로운 떨림 애니메이션 시작
+                    if(cold > 0) startShaking(eggImage)
+                }
+                .start()
+
+            iceOverlay.animate()
+                .x(randomX.toFloat())
+                .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
+                .setDuration(300) // 얼음 애니메이션
+                .start()
+        }
+        else {
+            if(spark > 0) {
+                spark--
+                // 애니메이션 효과로 위치 이동
+                eggImage.animate()
+                    .x(randomX.toFloat())
+                    .y(randomY.toFloat())
+                    .setDuration(50) // 이동 시간 (밀리초)
+                    .withEndAction {
+                        // 이동 후 새로운 떨림 애니메이션 시작
+                        if(cold > 0) startShaking(eggImage)
+                    }
+                    .start()
+
+                iceOverlay.animate()
+                    .x(randomX.toFloat())
+                    .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
+                    .setDuration(50) // 얼음 애니메이션
+                    .start()
+            }
+            else {
+                heavy--
+                // 애니메이션 효과로 위치 이동
+                eggImage.animate()
+                    .x(randomX.toFloat())
+                    .y(randomY.toFloat())
+                    .setDuration(600) // 이동 시간 (밀리초)
+                    .withEndAction {
+                        // 이동 후 새로운 떨림 애니메이션 시작
+                        if(cold > 0) startShaking(eggImage)
+                    }
+                    .start()
+
+                iceOverlay.animate()
+                    .x(randomX.toFloat())
+                    .y(randomY.toFloat() - 500) // 얼음 위치 업데이트
+                    .setDuration(600) // 얼음 애니메이션
+                    .start()
+            }
+        }
     }
 
+    private fun startShaking(eggImage: View) {
+        // 기존 애니메이터가 있으면 취소
+        shakeAnimator?.cancel()
+
+        // 현재 위치를 기준으로 진폭 계산
+        val currentX = eggImage.translationX
+        val currentY = eggImage.translationY
+
+        val shakeX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, currentX - 10f, currentX + 10f, currentX)
+        val shakeY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, currentY - 5f, currentY + 5f, currentY)
+
+        shakeAnimator = ObjectAnimator.ofPropertyValuesHolder(eggImage, shakeX, shakeY).apply {
+            duration = 200 // 떨림 주기: 0.2초
+            repeatMode = ValueAnimator.REVERSE // 떨림 방향 반복
+            repeatCount = ValueAnimator.INFINITE // 무한 반복
+        }
+        shakeAnimator?.start()
+    }
+    private fun stopShaking() {
+        shakeAnimator?.cancel() // 떨림 애니메이션 종료
+        shakeAnimator = null
+    }
 }
