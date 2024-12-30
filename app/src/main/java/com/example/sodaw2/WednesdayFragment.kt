@@ -41,6 +41,13 @@ class WednesdayFragment : Fragment() {
     // 코자핑 변수
     private var isSleeping = false
 
+    //차캐핑(에픽)
+    private var twice = 0
+    //바네핑
+    private var bane = 0
+
+    private var enlarge = 0
+
     // 등급별 티니핑 이름
     private val normalTiniPings = mapOf(
         "무셔핑" to R.drawable.image24,
@@ -116,6 +123,8 @@ class WednesdayFragment : Fragment() {
         val overlayColor = resources.getColor(R.color.ice, null)
 
         if(cold > 0) startShaking(eggImage)
+        /*if(bane > 0) score += 5
+        if(twice > 0) score += 2*/
 
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
@@ -130,7 +139,33 @@ class WednesdayFragment : Fragment() {
             if(cold > 0) cold--
             else stopShaking()
 
-            score++ // 점수 증가
+            if(enlarge > 0 ){
+                enlarge--
+                val density = resources.displayMetrics.density
+                eggImage.layoutParams = eggImage.layoutParams.apply{
+                    width = (300 * density).toInt()
+                    height = (300 * density).toInt()
+                }
+            }else{
+                val density = resources.displayMetrics.density
+                eggImage.layoutParams = eggImage.layoutParams.apply{
+                    width = (200 * density).toInt()
+                    height = (200 * density).toInt()
+                }
+            }
+            // twice가 0보다 큰 경우에는 점수를 2씩 증가
+            if (bane > 0){
+                bane--
+                score += 5
+            }
+            else if (twice > 0) {
+                twice--
+                score += 2
+            }
+            else {
+                score++ // 일반적인 경우 점수 1 증가
+            }
+            //score++ // 점수 증가
             scoreText.text = "Score: $score"
 
             // 점수에 따라 확률 업데이트 (10회마다)
@@ -315,7 +350,28 @@ class WednesdayFragment : Fragment() {
                     isSleeping = false // 100초 후 터치 가능
                 }, 10_000) // 100초 (100,000ms)
             }
+            else if(tiniPingName == "차캐핑" &&   twice == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 2배의 점수를 적용합니다"
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                twice = 10
+
+            }
+            else if(tiniPingName == "바네핑" &&   bane == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 5배의 점수를 적용합니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                bane= 10
+            }
+            else if(tiniPingName == "공쥬핑" &&   enlarge == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 크기가 증가합니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                enlarge= 10
+            }
         }
+
+
     }
 
     private fun zinPopupMessage(popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {

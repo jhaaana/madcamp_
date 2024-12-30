@@ -37,7 +37,6 @@
         android:id="@+id/eggImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/romi"
-        android:layout_centerInParent="true" />
+        android:src="@drawable/romi"/>
 
 </RelativeLayout>
