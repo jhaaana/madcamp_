@@ -4,5 +4,9 @@
         <!-- 기본 폰트 정의 -->
         <item name="android:fontFamily">@font/cookierun</item>
         <item name="fontFamily">@font/cookierun</item>
+
+        <!-- 상태 표시줄 색상 설정 -->
+        <item name="android:statusBarColor">@color/pink</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>
