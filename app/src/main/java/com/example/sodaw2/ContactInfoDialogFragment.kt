@@ -43,6 +43,11 @@ class ContactInfoDialogFragment : DialogFragment() {
         val view = inflater.inflate(R.layout.dialog_contact_info, container, false)
         val closeButton: ImageView = view.findViewById(R.id.closeButton)
 
+        val cardView: androidx.cardview.widget.CardView = view.findViewById(R.id.cardView)
+        cardView.setCardBackgroundColor(android.graphics.Color.TRANSPARENT)
+        cardView.cardElevation = 0f
+        cardView.radius = 0f
+
         // 닫기 버튼 동작
         closeButton.setOnClickListener {
             dismiss() // 팝업 창 닫기
@@ -93,6 +98,8 @@ class ContactInfoDialogFragment : DialogFragment() {
             setGravity(Gravity.CENTER) // 팝업 창을 화면 중앙에 표시
             setDimAmount(0.5f) // 배경 흐림 효과
 
+            //setBackgroundDrawableResource(androidx.R.color.transparent)
+
             // dp를 px로 변환하여 y축 위치 설정
             val params = attributes
             val dpAsPixels = TypedValue.applyDimension(
@@ -103,5 +110,8 @@ class ContactInfoDialogFragment : DialogFragment() {
             params.y = dpAsPixels
             attributes = params
         }
+
+        val cardView = view?.findViewById<androidx.cardview.widget.CardView>(R.id.cardView)
+        cardView?.setCardBackgroundColor(android.graphics.Color.TRANSPARENT)
     }
 }
