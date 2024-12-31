@@ -40,7 +40,6 @@ class WednesdayFragment : Fragment() {
     private var evil = 0
     // 코자핑 변수
     private var isSleeping = false
-
     //차캐핑(에픽)
     private var twice = 0
     //바네핑
@@ -145,18 +144,18 @@ class WednesdayFragment : Fragment() {
             if(cold > 0) cold--
             else stopShaking()
 
-            // twice가 0보다 큰 경우에는 점수를 2씩 증가
-            if (bane > 0){
-                bane--
-                score += 5
-            }
-            else if (twice > 0) {
-                twice--
-                score += 2
-            }
+            if(twice == 0 && bane == 0) score++
             else {
-                score++ // 일반적인 경우 점수 1 증가
+                if (bane > 0){
+                    bane--
+                    score += 5
+                }
+                if (twice > 0) {
+                    twice--
+                    score += 2
+                }
             }
+
             //score++ // 점수 증가
             scoreText.text = "Score: $score"
 

@@ -89,11 +89,15 @@ class ContactInfoDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
-            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (resources.displayMetrics.heightPixels * 0.5).toInt())
+            setLayout((resources.displayMetrics.widthPixels * 0.9).toInt(), (resources.displayMetrics.heightPixels * 0.55).toInt())
             setGravity(Gravity.CENTER) // 팝업 창을 화면 중앙에 표시
             setDimAmount(0.5f) // 배경 흐림 효과
 
             // dp를 px로 변환하여 y축 위치 설정
+
+            // 배경을 투명하게 설정
+            setBackgroundDrawableResource(android.R.color.transparent)
+
             val params = attributes
             val dpAsPixels = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
