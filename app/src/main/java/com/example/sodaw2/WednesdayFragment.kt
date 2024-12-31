@@ -130,15 +130,19 @@ class WednesdayFragment : Fragment() {
         if(cold > 0) startShaking(eggImage)
         /*if(bane > 0) score += 5
         if(twice > 0) score += 2*/
-
+        if(!isSleeping) eggImage.setImageResource(R.drawable.romi)
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
             if (isSleeping) {
+
                 // 잠들어 있는 경우 팝업 메시지 표시
                 popupTextView.text = "로미가 잠들어 있습니다.. 조금만 기다려주세요!"
                 popupTextView.visibility = View.VISIBLE
                 zinPopupMessage(popupTextView, "코자핑", "SR")
                 return@setOnClickListener // 리스너 실행 중단
+            }
+            else{
+                eggImage.setImageResource(R.drawable.romi)
             }
 
             if(cold > 0) cold--
@@ -180,7 +184,7 @@ class WednesdayFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            collectItemBasedOnProbability(popupTextView)
+            collectItemBasedOnProbability(eggImage, popupTextView)
 
             if(enlarge > 0 ){
                 enlarge--
@@ -223,7 +227,7 @@ class WednesdayFragment : Fragment() {
         return view
     }
 
-    private fun collectItemBasedOnProbability(popupMessage: TextView) {
+    private fun collectItemBasedOnProbability(eggImage: ImageView, popupMessage: TextView) {
         val rand = Random.nextInt(0, 100)
         when {
             rand < normalProbability -> {
@@ -237,7 +241,7 @@ class WednesdayFragment : Fragment() {
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
-                showPopupMessage(popupMessage, randomTiniPing, "노멀")
+                showPopupMessage(eggImage, popupMessage, randomTiniPing, "노멀")
             }
             rand < epicProbability -> {
                 // 에픽 아이템 수집
@@ -250,7 +254,7 @@ class WednesdayFragment : Fragment() {
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
-                showPopupMessage(popupMessage, randomTiniPing, "에픽")
+                showPopupMessage(eggImage, popupMessage, randomTiniPing, "에픽")
             }
             rand < rareProbability -> {
                 // 레어 아이템 수집
@@ -263,7 +267,7 @@ class WednesdayFragment : Fragment() {
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
-                showPopupMessage(popupMessage, randomTiniPing, "레어")
+                showPopupMessage(eggImage, popupMessage, randomTiniPing, "레어")
             }
             rand < superRareProbability -> {
                 // 에픽 아이템 수집
@@ -276,12 +280,12 @@ class WednesdayFragment : Fragment() {
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
-                showPopupMessage(popupMessage, randomTiniPing, "슈퍼레어")
+                showPopupMessage(eggImage, popupMessage, randomTiniPing, "슈퍼레어")
             }
         }
     }
 
-    private fun showPopupMessage(popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {
+    private fun showPopupMessage(eggImage: ImageView, popupMessage: TextView, tiniPingName: String, tiniPingRank: String) {
         if(isTiniPingCollected[tiniPingName] == false) { // 수집 안된 티니핑
                 isTiniPingCollected[tiniPingName] = true
                 popupMessage.text = "$tiniPingName($tiniPingRank)을 습득했습니다!"
@@ -341,12 +345,15 @@ class WednesdayFragment : Fragment() {
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100초 동안 잠들었습니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
-
                 // 코자핑 가호 활성화
                 isSleeping = true
+
+                eggImage.setImageResource(R.drawable.romi_blind)
                 Handler(Looper.getMainLooper()).postDelayed({
                     isSleeping = false // 100초 후 터치 가능
+                    eggImage.setImageResource(R.drawable.romi)
                 }, 10_000) // 100초 (100,000ms)
+
             }
             else if(tiniPingName == "차캐핑" &&   twice == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 2배의 점수를 적용합니다"
