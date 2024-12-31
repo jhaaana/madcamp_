@@ -14,6 +14,8 @@ import kotlin.random.Random
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.ContextCompat
+import android.view.MotionEvent
+
 
 class WednesdayFragment : Fragment() {
     private var score = 0
@@ -46,6 +48,8 @@ class WednesdayFragment : Fragment() {
     private var bane = 0
 
     private var enlarge = 0
+
+    private var heart = false
 
     // 등급별 티니핑 이름
     private val normalTiniPings = mapOf(
@@ -114,6 +118,7 @@ class WednesdayFragment : Fragment() {
         val scoreText: TextView = view.findViewById(R.id.scoreText)
         val eggImage: ImageView = view.findViewById(R.id.eggImage)
         val popupTextView: TextView = view.findViewById(R.id.popupTextView)
+        addTouchEffect(eggImage)
 
         val density = resources.displayMetrics.density
         eggImage.layoutParams = eggImage.layoutParams.apply{
@@ -131,10 +136,49 @@ class WednesdayFragment : Fragment() {
         /*if(bane > 0) score += 5
         if(twice > 0) score += 2*/
         if(!isSleeping) eggImage.setImageResource(R.drawable.romi)
+
+        /*if(heart)*/ eggImage.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // 터치 시 애니메이션 추가 가능 (축소 등)
+                    val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                        v,
+                        PropertyValuesHolder.ofFloat(View.SCALE_X, 0.9f),
+                        PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.9f)
+                    )
+                    scaleDown.duration = 100
+                    scaleDown.start()
+                    false // 이벤트 소비
+                }
+                MotionEvent.ACTION_UP -> {
+                    // 부모 뷰 그룹 내 터치 좌표 계산
+                    val parentViewGroup = v.parent as? ViewGroup
+                    val location = IntArray(2)
+                    parentViewGroup?.getLocationOnScreen(location)
+
+                    // 부모 기준 상대 좌표로 변환
+                    val x = event.rawX - location[0]
+                    val y = event.rawY - location[1]
+
+                    showHeart(v as ImageView, x, y)
+
+                    // 크기 복원 애니메이션
+                    val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+                        v,
+                        PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
+                        PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
+                    )
+                    scaleUp.duration = 100
+                    scaleUp.start()
+                    false // 이벤트 소비
+                }
+                else -> false // 다른 이벤트는 처리하지 않음
+            }
+        }
+
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
             if (isSleeping) {
-
                 // 잠들어 있는 경우 팝업 메시지 표시
                 popupTextView.text = "로미가 잠들어 있습니다.. 조금만 기다려주세요!"
                 popupTextView.visibility = View.VISIBLE
@@ -291,6 +335,7 @@ class WednesdayFragment : Fragment() {
                 popupMessage.text = "$tiniPingName($tiniPingRank)을 습득했습니다!"
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                if(tiniPingName == "하츄핑") heart = true
             }
         else{ // tiniPingName에 해당하는 티니핑이 수집되었음을 의미하니깐,
             // 이제 여기서 티니핑별 함수? 구현하면됨
@@ -486,5 +531,55 @@ class WednesdayFragment : Fragment() {
     private fun stopShaking() {
         shakeAnimator?.cancel() // 떨림 애니메이션 종료
         shakeAnimator = null
+    }
+
+    private fun addTouchEffect(view: View) {
+        view.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // 터치 시 축소 애니메이션 효과
+                    val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                        v,
+                        PropertyValuesHolder.ofFloat(View.SCALE_X, 0.9f),
+                        PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.9f)
+                    )
+                    scaleDown.duration = 100
+                    scaleDown.start()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    // 터치 끝나면 원래 크기로 복원
+                    val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+                        v,
+                        PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
+                        PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
+                    )
+                    scaleUp.duration = 100
+                    scaleUp.start()
+                }
+            }
+            // 이벤트를 계속 전달
+            false
+        }
+    }
+    private fun showHeart(eggImage: ImageView, x: Float, y: Float) {
+        val context = eggImage.context
+        val heart = ImageView(context).apply {
+            setImageDrawable(ContextCompat.getDrawable(context, R.drawable.heartt)) // 하트 이미지 설정
+            layoutParams = ViewGroup.LayoutParams(100, 100) // 하트 크기 설정
+            this.x = x - 50 // 중심 맞춤
+            this.y = y - 50
+        }
+
+        // 부모 뷰 그룹에 추가
+        val parentViewGroup = eggImage.parent as? ViewGroup
+        parentViewGroup?.addView(heart)
+
+        // 애니메이션: 위로 이동 + 희미해짐
+        heart.animate()
+            .translationYBy(-200f) // 위로 200px 이동
+            .alpha(0f) // 투명해짐
+            .setDuration(1000) // 1초 동안 애니메이션
+            .withEndAction { parentViewGroup?.removeView(heart) } // 애니메이션 종료 후 제거
+            .start()
     }
 }

@@ -43,11 +43,6 @@ class ContactInfoDialogFragment : DialogFragment() {
         val view = inflater.inflate(R.layout.dialog_contact_info, container, false)
         val closeButton: ImageView = view.findViewById(R.id.closeButton)
 
-        val cardView: androidx.cardview.widget.CardView = view.findViewById(R.id.cardView)
-        cardView.setCardBackgroundColor(android.graphics.Color.TRANSPARENT)
-        cardView.cardElevation = 0f
-        cardView.radius = 0f
-
         // 닫기 버튼 동작
         closeButton.setOnClickListener {
             dismiss() // 팝업 창 닫기
@@ -114,8 +109,5 @@ class ContactInfoDialogFragment : DialogFragment() {
             params.y = dpAsPixels
             attributes = params
         }
-
-        val cardView = view?.findViewById<androidx.cardview.widget.CardView>(R.id.cardView)
-        cardView?.setCardBackgroundColor(android.graphics.Color.TRANSPARENT)
     }
 }
