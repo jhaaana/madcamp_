@@ -193,9 +193,6 @@ class WednesdayFragment : Fragment() {
 
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
-
-
-
             if (isSleeping) {
                 // 잠들어 있는 경우 팝업 메시지 표시
                 popupTextView.text = "로미가 잠들어 있습니다.. 조금만 기다려주세요!"
@@ -204,7 +201,7 @@ class WednesdayFragment : Fragment() {
                 return@setOnClickListener // 리스너 실행 중단
             }
             else{
-                eggImage.setImageResource(R.drawable.romi)
+                if(!isSleeping) eggImage.setImageResource(R.drawable.romi)
             }
 
             if(cold > 0) cold--
@@ -312,10 +309,10 @@ class WednesdayFragment : Fragment() {
                     eggImage.setImageResource(it)
                 } ?: run {
                     // null인 경우 처리 (예: 기본 이미지 설정)
-                    eggImage.setImageResource(R.drawable.romi)
+                    if(!isSleeping) eggImage.setImageResource(R.drawable.romi)
                 }
             }
-            else eggImage.setImageResource(R.drawable.romi)
+            else if(!isSleeping)eggImage.setImageResource(R.drawable.romi)
 
             // 알 이미지 무작위 위치로 이동
             view.post {
@@ -352,8 +349,8 @@ class WednesdayFragment : Fragment() {
                 // score = 0
 
                 // 에픽 티니핑들 배열..
-                val randomTiniPing = epicTiniPings.keys.random()
-
+                // val randomTiniPing = epicTiniPings.keys.random()
+                val randomTiniPing = "코자핑"
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
                 showPopupMessage(eggImage, popupMessage, randomTiniPing, "에픽")
