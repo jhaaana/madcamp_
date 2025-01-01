@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +14,17 @@ import androidx.fragment.app.Fragment
 import kotlin.random.Random
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings.Global.putInt
+import android.util.Log
 import androidx.core.content.ContextCompat
 import android.view.MotionEvent
 
 
 class WednesdayFragment : Fragment() {
     private var score = 0
-    private val SCORE_KEY = "score_key" // SharedPreferences에 사용할 키
+    private val SCORE_KY = "score_key" // SharedPreferences에 사용할 키
+    private val NORMAL_PROBABILITY_KEY = "normalProbability"
+
 
     // 등급별 수집 확률
     private var normalProbability = 0
@@ -109,10 +114,11 @@ class WednesdayFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wednesday, container, false)
 
-        // SharedPreferences에서 점수 복원
-        // *** val sharedPreferences = requireContext().getSharedPreferences("game_prefs", Context.MODE_PRIVATE)
-        // *** score = sharedPreferences.getInt(SCORE_KEY, 0)
-        // *** normalProbability = sharedPreferences.getInt("normal_probability", 0)
+        // SharedPreferences에서 점수 불러오기
+        val sharedPreferences = requireContext().getSharedPreferences("game_prefs", Context.MODE_PRIVATE)
+        score = sharedPreferences.getInt(SCORE_KY, 0)
+
+
 
         // 텍스트와 이미지뷰 초기화
         val scoreText: TextView = view.findViewById(R.id.scoreText)
@@ -120,14 +126,20 @@ class WednesdayFragment : Fragment() {
         val popupTextView: TextView = view.findViewById(R.id.popupTextView)
         addTouchEffect(eggImage)
 
+        val editor = sharedPreferences.edit()
+
         val density = resources.displayMetrics.density
         eggImage.layoutParams = eggImage.layoutParams.apply{
             width = (200 * density).toInt()
             height = (200 * density).toInt()
         }
+//         val sharedPreferences = requireContext().getSharedPreferences("game_prefs", Context.MODE_PRIVATE)
+//         score = sharedPreferences.getInt(SCORE_KY, 0)
+//         normalProbability = sharedPreferences.getInt("normal_probability", 0)
 
         // 초기 점수 표시
         scoreText.text = "Score: $score"
+
 
         // 원하는 색상을 덧씌우기 (예: 반투명 파란색)
         val overlayColor = resources.getColor(R.color.ice, null)
@@ -178,6 +190,9 @@ class WednesdayFragment : Fragment() {
 
         // 알 이미지 클릭 리스너
         eggImage.setOnClickListener {
+
+
+
             if (isSleeping) {
                 // 잠들어 있는 경우 팝업 메시지 표시
                 popupTextView.text = "로미가 잠들어 있습니다.. 조금만 기다려주세요!"
@@ -204,8 +219,13 @@ class WednesdayFragment : Fragment() {
                 }
             }
 
+
+
+
             //score++ // 점수 증가
             scoreText.text = "Score: $score"
+
+
 
             // 점수에 따라 확률 업데이트 (10회마다)
             if (score > 10) normalProbability += 10
@@ -213,10 +233,18 @@ class WednesdayFragment : Fragment() {
             if (score > 30) rareProbability += 10
             if (score > 40) superRareProbability += 10
 
+
+
+
+
             // *** sharedPreferences.edit().putInt("normal_probability", normalProbability).apply()
+            // SharedPreferences에서 점수와 확률을 불러오고 저장하는 코드
 
             // 점수를 SharedPreferences에 저장
             // *** sharedPreferences.edit().putInt(SCORE_KEY, score).apply()
+
+
+
 
             val randomValue = (0..999999).random()
             if(randomValue < evil) {
@@ -263,9 +291,11 @@ class WednesdayFragment : Fragment() {
 
             // 알 이미지 무작위 위치로 이동
             view.post {
-                if(frozen == 0) moveEggRandomly(eggImage, view.width, view.height)
+                if (frozen == 0) moveEggRandomly(eggImage, view.width, view.height)
                 else frozen--
             }
+            editor.putInt(SCORE_KY, score)
+            editor.apply()
         }
 
         return view

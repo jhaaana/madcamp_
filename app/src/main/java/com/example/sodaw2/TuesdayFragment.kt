@@ -12,9 +12,29 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-
+import android.content.Context
+import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import java.io.File
 class TuesdayFragment : Fragment() {
+    private val gson = Gson()
+    private val fileName = "dataSet1.json"
     private lateinit var adapter: GridAdapter
+
+    // 데이터를 저장하는 함수
+    private fun saveDataToFile(data: List<GridItem>) {
+        val json = gson.toJson(data) // 데이터를 JSON 형식으로 변환
+        val file = File(requireContext().filesDir, fileName) // 파일 경로 생성
+        file.writeText(json) // 파일에 JSON 데이터 저장
+    }
+
+    // 파일에서 데이터를 불러오는 함수
+    private fun loadDataFromFile(): List<GridItem> {
+        val file = File(requireContext().filesDir, fileName)
+        if (!file.exists()) return mutableListOf() // 파일이 없으면 빈 리스트 반환
+        val json = file.readText() // 파일에서 JSON 데이터를 읽기
+        return gson.fromJson(json, Array<GridItem>::class.java).toList() // JSON을 객체로 변환
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,6 +42,11 @@ class TuesdayFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_tuesday, container, false)
         // ViewModel 초기화
+        val loadedData = loadDataFromFile().toMutableList()
+        if (loadedData.isNotEmpty()) {
+            SharedData.updateDataSet1(loadedData)
+        }
+
 
         // Find views
         val toggleSwitch: Switch = view.findViewById(R.id.toggleSwitch)
@@ -37,6 +62,7 @@ class TuesdayFragment : Fragment() {
         // Observe data changes
         SharedData.dataSet1.observe(viewLifecycleOwner) { updatedList ->
             adapter.updateData(updatedList)
+            saveDataToFile(updatedList)
         }
 
         // Add listener to toggle between datasets

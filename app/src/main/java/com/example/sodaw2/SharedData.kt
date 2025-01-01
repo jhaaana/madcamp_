@@ -30,6 +30,13 @@ object SharedData {
     )
     val dataSet1: LiveData<MutableList<GridItem>> get() = _dataSet1
 
+    fun updateDataSet1(newData: List<GridItem>) {
+        _dataSet1.postValue(newData.toMutableList()) // 데이터를 MutableList로 변환하여 반영
+    }
+
+
+
+
     fun updateGridItem(name: String, isHidden: Boolean) {
         val currentData = _dataSet1.value ?: return
         val item = currentData.find { it.name == name }
