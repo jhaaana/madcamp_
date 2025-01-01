@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,12 @@ class WednesdayFragment : Fragment() {
 
     private var enlarge = 0
 
-    private var heart = false
+    private var hu = 0
+
+    private var picture = 0
+
+    private var randomKey: String? = "하츄핑"
+    // private var heart = false
 
     // 등급별 티니핑 이름
     private val normalTiniPings = mapOf(
@@ -109,10 +115,10 @@ class WednesdayFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wednesday, container, false)
 
-        // SharedPreferences에서 점수 복원
-        // *** val sharedPreferences = requireContext().getSharedPreferences("game_prefs", Context.MODE_PRIVATE)
-        // *** score = sharedPreferences.getInt(SCORE_KEY, 0)
-        // *** normalProbability = sharedPreferences.getInt("normal_probability", 0)
+//        // SharedPreferences에서 점수 복원
+//         val sharedPreferences = requireContext().getSharedPreferences("game_prefs", Context.MODE_PRIVATE)
+//         score = sharedPreferences.getInt(SCORE_KEY, 0)
+//         normalProbability = sharedPreferences.getInt("normal_probability", 0)
 
         // 텍스트와 이미지뷰 초기화
         val scoreText: TextView = view.findViewById(R.id.scoreText)
@@ -192,9 +198,14 @@ class WednesdayFragment : Fragment() {
             if(cold > 0) cold--
             else stopShaking()
 
-            if(twice == 0 && bane == 0) score++
+            if(twice == 0 && bane == 0 && hu == 0) score++
             else {
-                if (bane > 0){
+                if(hu > 0) {
+                    hu--
+                    val randomValue = (0..1).random()
+                    if(randomValue == 0) score++
+                }
+                if (bane > 0) {
                     bane--
                     score += 5
                 }
@@ -260,6 +271,26 @@ class WednesdayFragment : Fragment() {
                 eggImage.setColorFilter(overlayColor, android.graphics.PorterDuff.Mode.SRC_ATOP)
             }
             else eggImage.clearColorFilter()
+            if(picture > 0) {
+                picture--
+
+                val imageResource = when {
+                    normalTiniPings.containsKey(randomKey) -> normalTiniPings[randomKey]
+                    epicTiniPings.containsKey(randomKey) -> epicTiniPings[randomKey]
+                    rareTiniPings.containsKey(randomKey) -> rareTiniPings[randomKey]
+                    superRareTiniPings.containsKey(randomKey) -> superRareTiniPings[randomKey]
+                    else -> null // 해당 key가 없을 경우 null 반환
+                }
+
+                // 이미지 리소스를 ImageView에 설정
+                imageResource?.let {
+                    eggImage.setImageResource(it)
+                } ?: run {
+                    // null인 경우 처리 (예: 기본 이미지 설정)
+                    eggImage.setImageResource(R.drawable.romi)
+                }
+            }
+            else eggImage.setImageResource(R.drawable.romi)
 
             // 알 이미지 무작위 위치로 이동
             view.post {
@@ -281,7 +312,8 @@ class WednesdayFragment : Fragment() {
                 // score = 0
 
                 // 노멀 티니핑들 배열..
-                val randomTiniPing = normalTiniPings.keys.random()
+                // val randomTiniPing = normalTiniPings.keys.random()
+                val randomTiniPing = "그림핑"
 
                 SharedData.updateGridItem(name = randomTiniPing, isHidden = false)
 
@@ -335,7 +367,7 @@ class WednesdayFragment : Fragment() {
                 popupMessage.text = "$tiniPingName($tiniPingRank)을 습득했습니다!"
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
-                if(tiniPingName == "하츄핑") heart = true
+                // if(tiniPingName == "하츄핑") heart = true
             }
         else{ // tiniPingName에 해당하는 티니핑이 수집되었음을 의미하니깐,
             // 이제 여기서 티니핑별 함수? 구현하면됨
@@ -345,19 +377,26 @@ class WednesdayFragment : Fragment() {
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 frozen = 10
             }
-            else if(tiniPingName == "찌릿핑" && spark == 0) { // 찌릿핑 버프: 로미 100회동안 이동속도 증가
+            if(tiniPingName == "그림핑" && picture == 0) { // 꽁꽁핑 버프: 로미 100회동안 안움직이게
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 티니핑으로 변합니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                randomKey = getRandomKeyWithTrueValue(isTiniPingCollected)
+                picture = 10
+            }
+            else if((tiniPingName == "찌릿핑" || tiniPingName == "떠벌핑") && spark == 0) { // 찌릿핑 버프: 로미 100회동안 이동속도 증가
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 더 빠르게 움직입니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 spark = 10
             }
-            else if(tiniPingName == "무거핑" && heavy == 0) { // 무거핑 버프: 로미 100회동안 이동속도 감소
+            else if((tiniPingName == "무거핑" || tiniPingName == "똑똑핑") && heavy == 0) { // 무거핑 버프: 로미 100회동안 이동속도 감소
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 더 느리게 움직입니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 heavy = 10
             }
-            else if(tiniPingName == "덜덜핑" && cold == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+            else if((tiniPingName == "덜덜핑" || tiniPingName == "무셔핑") && cold == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 덜덜 떱니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
@@ -370,7 +409,7 @@ class WednesdayFragment : Fragment() {
                 small = 10
             }
             else if(tiniPingName == "시러핑") { // 시러핑 버프: 로미가 수집한 노멀티니핑하나 없앰
-                popupMessage.text = "$tiniPingName 의 가호!\n수집된 노멀 티니핑들 중 한 마리를 잃어버렸습니다."
+                popupMessage.text = "$tiniPingName 의 가호!\n노멀 티니핑들 중 한 마리를 잃어버렸습니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 val deletedTiniPing = normalTiniPings.keys.random()
@@ -378,10 +417,18 @@ class WednesdayFragment : Fragment() {
                 SharedData.updateGridItem(name = deletedTiniPing, isHidden = true)
             }
             else if(tiniPingName == "모야핑") { // 모야핑 버프: 로미가 미수집한 에픽티니핑하나 수집
-                popupMessage.text = "$tiniPingName 의 가호!\n미수집된 에픽 티니핑들 중 한 마리를 수집했습니다."
+                popupMessage.text = "$tiniPingName 의 가호!\n에픽 티니핑들 중 한 마리를 수집했습니다."
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 val collectedTiniPing = epicTiniPings.keys.random()
+                isTiniPingCollected[collectedTiniPing] = true
+                SharedData.updateGridItem(name = collectedTiniPing, isHidden = false)
+            }
+            else if(tiniPingName == "다조핑") { // 다조핑 버프: 로미가 미수집한 노멀티니핑하나 수집
+                popupMessage.text = "$tiniPingName 의 가호!\n노멀 티니핑들 중 한 마리를 수집했습니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                val collectedTiniPing = normalTiniPings.keys.random()
                 isTiniPingCollected[collectedTiniPing] = true
                 SharedData.updateGridItem(name = collectedTiniPing, isHidden = false)
             }
@@ -400,7 +447,7 @@ class WednesdayFragment : Fragment() {
                 }, 10_000) // 100초 (100,000ms)
 
             }
-            else if(tiniPingName == "차캐핑" &&   twice == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+            else if((tiniPingName == "차캐핑" || tiniPingName == "베베핑") &&   twice == 0) { // 차캐&베베핑 버프: 로미 100회동안 터치카운트 + 2
                 popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 2배의 점수를 적용합니다"
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
@@ -418,6 +465,12 @@ class WednesdayFragment : Fragment() {
                 popupMessage.visibility = View.VISIBLE
                 zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
                 enlarge = 10
+            }
+            else if(tiniPingName == "아휴핑" &&   hu == 0) { // 덜덜핑 버프: 로미 100회동안 덜덜더럳ㄹ
+                popupMessage.text = "$tiniPingName 의 가호!\n로미가 100회 동안 50% 확률로 \n점수가 올라가지 않습니다."
+                popupMessage.visibility = View.VISIBLE
+                zinPopupMessage(popupMessage, tiniPingName, tiniPingRank)
+                hu = 10
             }
         }
     }
@@ -581,5 +634,13 @@ class WednesdayFragment : Fragment() {
             .setDuration(1000) // 1초 동안 애니메이션
             .withEndAction { parentViewGroup?.removeView(heart) } // 애니메이션 종료 후 제거
             .start()
+    }
+    fun getRandomKeyWithTrueValue(map: Map<String, Boolean>): String? {
+        val trueKeys = map.filter { it.value }.keys.toList()
+        return if (trueKeys.isNotEmpty()) {
+            trueKeys[Random.nextInt(trueKeys.size)]
+        } else {
+            null // True인 값이 없을 경우 null 반환
+        }
     }
 }
