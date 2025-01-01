@@ -22,6 +22,8 @@
 
 ### 스플래시 화면
 
+10.png
+
 ![scaryy - 복사본.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/9f001256-5bdd-455b-9170-651d10bfea38/scaryy_-_%EB%B3%B5%EC%82%AC%EB%B3%B8.png)
 
 - 앱을 처음 실행하면 앱의 제목이 포함된 스플래시 화면이 표시됩니다.
