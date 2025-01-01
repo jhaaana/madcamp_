@@ -49,4 +49,5 @@ object SharedData {
         currentData.forEach { it.isShown = !it.isShown } // true를 false로, false를 true로 전환
         _dataSet1.postValue(currentData)
     }
+
 }

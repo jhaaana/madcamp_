@@ -1,5 +1,8 @@
 package com.example.sodaw2
 
+import android.content.Context
+import android.content.SharedPreferences
+
 // GridItem.kt
 data class GridItem(
     val imageResId: Int,
@@ -18,4 +21,17 @@ data class GridItem(
             "UN" -> R.drawable.unknown_gradient
             else -> R.drawable.gradation_blue // N 랭크, 오렌지색
         }
+    // SharedPreferences를 통해 상태 저장
+    fun saveState(context: Context) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("TiniPingData", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(name, isHidden) // name을 키로 사용하여 isHidden 상태 저장
+        editor.apply()
+    }
+
+    // SharedPreferences를 통해 상태 불러오기
+    fun loadState(context: Context) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("TiniPingData", Context.MODE_PRIVATE)
+        isHidden = sharedPreferences.getBoolean(name, true) // 기본값은 true (숨김 상태)
+    }
 }
